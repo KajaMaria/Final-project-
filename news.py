@@ -3,8 +3,8 @@ import os
 import twitter
 import credentials
 import json
-import time
 import datetime
+
 
 API_KEY = os.environ.get('NEWS_KEY')
 
@@ -36,7 +36,6 @@ for article in top_headlines['articles']:
     # file.write("%s\n" % article['title'])
     title = article['title']
     publishedDate = article['publishedAt']
-    
     article_title[title] = publishedDate
 
 # print(article_title)
@@ -45,21 +44,18 @@ results = {}
 
 
 for k, v in article_title.items():
-        v_time = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(v['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
-        print(v_time)
-        # en_time = v + datetime.timedelta(days=0, seconds=0, microseconds=0,
-        #                      milliseconds=0, minutes=5, hours=0, weeks=0)
-        # results[k] = api.GetSearch(raw_query="q={k}&start_time={v}&end_time={en_time}", return_json=True)
-        # print(results[k])
+       
+        en_time = v + datetime.timedelta(days=0, seconds=0, microseconds=0,
+                             milliseconds=0, minutes=5, hours=0, weeks=0)
+        results[k] = api.GetSearch(raw_query="q={k}&start_time={v}&end_time={en_time}", return_json=True)
+        print(results[k])
 
 
 with open("results_page1.json", "w") as file:
     file.write(json.dumps(results))
 
-date = datetime.datetime.now()
-date2 = date + datetime.timedelta(days=0, seconds=0, microseconds=0,
-                                  milliseconds=0, minutes=+5, hours=0, weeks=0)
-print(date)
-print(date2)
-
-
+# date = datetime.datetime.now()
+# date2 = date + datetime.timedelta(days=0, seconds=0, microseconds=0,
+#                                   milliseconds=0, minutes=+5, hours=0, weeks=0)
+# print(date)
+# print(date2)

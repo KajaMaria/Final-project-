@@ -1,0 +1,3 @@
+credentials.py
+*.json
+!spec/*.json

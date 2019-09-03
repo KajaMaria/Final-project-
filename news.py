@@ -44,12 +44,8 @@ results = {}
 
 
 for k, v in article_title.items():
-        # v_time = v.time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(k['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
-        # print(v_time)
-        en_time = time.strptime(v,'%a %b %d %H:%M:%S +0000 %Y') + datetime.timedelta(days=0, seconds=0, microseconds=0,
-                             milliseconds=0, minutes=5, hours=0, weeks=0)
-        results[k] = api.GetSearch(raw_query="q={k}&start_time={v}&end_time={en_time}")
-        print(results[k])
+        results[k] = api.GetSearch(raw_query="q={k}&count=100", return_json=True)
+        
 
 
 with open("results_page1.json", "w") as file:

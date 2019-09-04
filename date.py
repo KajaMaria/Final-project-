@@ -44,7 +44,7 @@ results = {}
 
 
 for k, v in article_title.items():
-    results[k] = api.GetSearch(raw_query="q={k}&count=100", return_json=True)
+    results[k] = api.GetSearch(raw_query="q={k}&count=10", return_json=True)
 
 # with open("results_page1.json", "w") as file:
 #     file.write(json.dumps(results))
@@ -55,13 +55,13 @@ for k, v in article_title.items():
         create_time = []
         for tweet in v['statuses']:
             create_time.append(tweet['user']['created_at'])
-    # print(create_time)
+        print(create_time)
 
 for k, v in results.items():
     tweets = []
     for tweet in v['statuses']:
         tweets.append(tweet['user']['statuses_count'])
-# print(tweets)
+    # print(tweets)
 
 
 
@@ -76,7 +76,7 @@ list_date = string.join(array_date)
 date_object = datetime.datetime.strptime(list_date, '%b %d %H:%M:%S %Y').date()
 date = datetime.datetime.now().date()
 date2 = date - date_object
-date3 = str(date2).split(" ")[0]
-print(date3)
+date3 = int(str(date2).split(" ")[0])
+# print(type(date3))
 
 # date3 = datetime.datetime.strptime(created_time,"%a %b %d %H:%M:%S +0000 %Y").date()

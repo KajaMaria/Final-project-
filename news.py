@@ -42,19 +42,8 @@ for article in top_headlines['articles']:
 
 results = {}
 
-
 for k, v in article_title.items():
-        results[k] = api.GetSearch(raw_query="q={k}&count=100", return_json=True)
-        
-
+    results[k] = api.GetSearch(raw_query="q={k}&count=100", return_json=True)
 
 with open("results_page1.json", "w") as file:
     file.write(json.dumps(results))
-
-# date = datetime.datetime.now()
-# date2 = date + datetime.timedelta(days=0, seconds=0, microseconds=0,
-#                                   milliseconds=0, minutes=+5, hours=0, weeks=0)
-# print(date)
-# print(date2)
-
-

@@ -61,7 +61,7 @@ for k, v in results.items():
     tweets = []
     for tweet in v['statuses']:
         tweets.append(tweet['user']['statuses_count'])
-print(tweets)
+# print(tweets)
 
 
 
@@ -73,13 +73,10 @@ del array_date[0]
 del array_date[3]
 string = ' '
 list_date = string.join(array_date)
-
-date_object = datetime.datetime.strptime(list_date, '%b %d %H:%M:%S %Y')
-
-print(date_object)
-
-date = datetime.datetime.now()
+date_object = datetime.datetime.strptime(list_date, '%b %d %H:%M:%S %Y').date()
+date = datetime.datetime.now().date()
 date2 = date - date_object
+date3 = str(date2).split(" ")[0]
+print(date3)
 
-print(date)
-print(date2)
+# date3 = datetime.datetime.strptime(created_time,"%a %b %d %H:%M:%S +0000 %Y").date()

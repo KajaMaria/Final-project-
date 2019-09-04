@@ -1,5 +1,5 @@
 import pytest
 
 
-def func(x):
+def bio_bot():
     return x + 1

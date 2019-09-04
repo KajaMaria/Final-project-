@@ -3,7 +3,10 @@ import os
 import twitter
 import credentials
 import json
+from neo4j import GraphDatabase
 
+driver = GraphDatabase.driver(
+    "bolt://localhost:7687", auth=("neo4j", "london"))
 
 API_KEY = os.environ.get('NEWS_KEY')
 
@@ -28,21 +31,43 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
                   access_token_secret=(API_ACCESS_TOKEN_SECRET),
                   sleep_on_rate_limit=True)
 
-# with open("headlines", "w") as file:
-article_title = {}
+article_title = []
 
 for article in top_headlines['articles']:
-    # file.write("%s\n" % article['title'])
-    title = article['title']
-    publishedDate = article['publishedAt']
-    article_title[title] = publishedDate
+    article_title.append(article['title'])
+
+article_title = list(set(article_title))
 
 results = {}
 
 for headline in article_title:
-    # string_check = 'q={}'.format(headline)
-    results[headline] = (api.GetSearch(
-        raw_query="q={headline}", return_json=True))
+    results[headline] = api.GetSearch(
+        raw_query="q={k}&count=100", return_json=True)
 
-with open("results_page1.json", "w") as file:
-    file.write(json.dumps(results))
+output = {}
+
+for k, v in results.items():
+    users = []
+    print(len(v['statuses']))
+    for i in v['statuses']:
+        users.append(i['user']['screen_name'])
+    output[k] = users
+
+
+def add_node_user(tx, headline, name):
+    tx.run("MERGE (a:User {name: $name}) "
+           "MERGE (h:Headline {headline: $headline}) "
+           "MERGE (a)-[:RETWEETED]->(h)",
+           name=name, headline=headline)
+
+
+def print_nodes(tx):
+    for record in tx.run("MATCH (n) RETURN n"):
+        print(record)
+
+
+with driver.session() as session:
+    for k, v in output.items():
+        for user in v:
+            session.write_transaction(add_node_user, k, user)
+    session.read_transaction(print_nodes)

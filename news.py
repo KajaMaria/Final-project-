@@ -1,4 +1,4 @@
-from newsapi import NewsApiClient
+from newsapi.newsapi_client import NewsApiClient
 import os
 import twitter
 import credentials
@@ -40,6 +40,7 @@ article_title = list(set(article_title))
 
 results = {}
 
+
 for headline in article_title:
     results[headline] = api.GetSearch(
         raw_query="q={k}&count=100", return_json=True)
@@ -48,7 +49,6 @@ output = {}
 
 for k, v in results.items():
     users = []
-    print(len(v['statuses']))
     for i in v['statuses']:
         users.append(i['user']['screen_name'])
     output[k] = users
@@ -71,3 +71,15 @@ with driver.session() as session:
         for user in v:
             session.write_transaction(add_node_user, k, user)
     session.read_transaction(print_nodes)
+
+
+def return_non_verified_nonprotected_users(results):
+    for k, v in results.items():
+        users = []
+        for tweet in v['statuses']:
+            if tweet['user']['verified'] == False and tweet['user']['protected'] == False :
+                users.append(tweet['user']['screen_name'])
+    return users
+
+
+print(return_non_verified_nonprotected_users(results))

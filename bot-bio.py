@@ -1,13 +1,14 @@
-import json
+from twitterapi import run_twitter_query
 
 
-def bio_bot(**results):
+def bio_bot():
+    results = run_twitter_query()
 
-    for k, v in results.items():
+    for user in results:
 
         bot = ['iamabot', 'imabot', 'justabot']
         # description has whitespace removed and downcased
-        bot_bio = ''.join(v['description'].split()).lower()
+        bot_bio = ''.join(user['description'].split()).lower()
 
         if any(x in bot_bio for x in bot):
             print("Bot")
@@ -15,4 +16,4 @@ def bio_bot(**results):
             print("Not bot")
 
 
-bio_bot(**results)
+bio_bot()

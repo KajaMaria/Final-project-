@@ -1,10 +1,16 @@
-from newsapi import NewsApiClient
+from newsapi.newsapi_client import NewsApiClient
 import os
 import twitter
 import credentials
 import json
-import datetime
+from neo4j import GraphDatabase
+from bs4 import BeautifulSoup
+import requests
+import urllib.request
+import time
 
+# driver = GraphDatabase.driver(
+#     "bolt://localhost:7687", auth=("neo4j", "london"))
 
 API_KEY = os.environ.get('NEWS_KEY')
 
@@ -29,33 +35,71 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
                   access_token_secret=(API_ACCESS_TOKEN_SECRET),
                   sleep_on_rate_limit=True)
 
-# with open("headlines", "w") as file:
-article_title = {}
+article_title = []
 
 for article in top_headlines['articles']:
-    # file.write("%s\n" % article['title'])
-    title = article['title']
-    publishedDate = article['publishedAt']
-    article_title[title] = publishedDate
+    article_title.append(article['title'])
 
-# print(article_title)
+article_title = list(set(article_title))
 
 results = {}
 
+for headline in article_title:
+    results[headline] = api.GetSearch(
+        term=headline, count=100, return_json=True)
 
-for k, v in article_title.items():
-       
-        en_time = v + datetime.timedelta(days=0, seconds=0, microseconds=0,
-                             milliseconds=0, minutes=5, hours=0, weeks=0)
-        results[k] = api.GetSearch(raw_query="q={k}&start_time={v}&end_time={en_time}", return_json=True)
-        print(results[k])
+output = {}
+
+for k, v in results.items():
+    users = []
+    for i in v['statuses']:
+        users.append(i['user']['screen_name'])
+    output[k] = users
+
+users_by_headline = []
+
+for k, v in results.items():
+    user_info = []
+    for tweets in v['statuses']:
+        user_info.append({'screen_name': tweets['user']['screen_name'],
+                          'urls': tweets['user']['urls'],
+                          'tweet_count': tweets['user']['statuses_count'],
+                          'created_at': tweets['user']['created_at'],
+                          'description': tweets['user']['description'],
+                          'url': tweets['user']['entities']['urls']})
+    users_by_headline.append(user_info)
 
 
-with open("results_page1.json", "w") as file:
-    file.write(json.dumps(results))
+def add_node_user(tx, headline, name):
+    tx.run("MERGE (a:User {name: $name}) "
+           "MERGE (h:Headline {headline: $headline}) "
+           "MERGE (a)-[:RETWEETED]->(h)",
+           name=name, headline=headline)
 
-# date = datetime.datetime.now()
-# date2 = date + datetime.timedelta(days=0, seconds=0, microseconds=0,
-#                                   milliseconds=0, minutes=+5, hours=0, weeks=0)
-# print(date)
-# print(date2)
+
+def print_nodes(tx):
+    for record in tx.run("MATCH (n) RETURN n"):
+        print(record)
+
+
+with driver.session() as session:
+    for k, v in output.items():
+        for user in v:
+            session.write_transaction(add_node_user, k, user)
+    session.read_transaction(print_nodes)
+
+
+def return_non_verified_nonprotected_users(results):
+    for k, v in results.items():
+        users = []
+        for tweet in v['statuses']:
+            if tweet['user']['verified'] == False and tweet['user']['protected'] == False :
+                users.append(tweet['user']['screen_name'])
+    return users
+
+def find_fake_news_urls(user):
+    for url in user['entities']['description']['urls']:
+        print(url)
+        html = requests.get(url)
+        soup = BeautifulSoup(html.text, 'html.parser')
+        print(soup.prettify())

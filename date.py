@@ -6,6 +6,7 @@ import json
 import time
 import datetime
 
+
 API_KEY = os.environ.get('NEWS_KEY')
 
 # Innit
@@ -29,41 +30,41 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
                   access_token_secret=(API_ACCESS_TOKEN_SECRET),
                   sleep_on_rate_limit=True)
 
-# with open("headlines", "w") as file:
-article_title = {}
+article_title = []
 
 for article in top_headlines['articles']:
-    # file.write("%s\n" % article['title'])
-    title = article['title']
-    publishedDate = article['publishedAt']
-    article_title[title] = publishedDate
+    article_title.append(article['title'])
 
-# print(article_title)
-
+article_title = list(set(article_title))
 results = {}
 
 
-for k, v in article_title.items():
-    results[k] = api.GetSearch(raw_query="q={k}&count=10", return_json=True)
+for headline in article_title:
+    results[headline] = api.GetSearch(term=headline, return_json=True)
 
 # with open("results_page1.json", "w") as file:
 #     file.write(json.dumps(results))
-
-
-# def return_users_with_created_at(results):
-    for k, v in results.items():
-        create_time = []
-        for tweet in v['statuses']:
-            create_time.append(tweet['user']['created_at'])
-        print(create_time)
+output = {}
 
 for k, v in results.items():
-    tweets = []
-    for tweet in v['statuses']:
-        tweets.append(tweet['user']['statuses_count'])
-    # print(tweets)
+    users = []
+    for i in v['statuses']:
+        users.append(i['user']['screen_name'])
+    output[k] = users
+    # print(output)
 
 
+
+users_by_headline = []
+for k, v in results.items():
+    user_info = {}
+    for tweets in v['statuses']:
+        for tweet in tweets:
+            user_info.update({'screen_name': tweets['user']['screen_name'],
+                              'created_at': tweets['user']['created_at'],
+                              'tweet_count': tweets['user']['statuses_count']})
+    users_by_headline.append(user_info)
+print(users_by_headline)
 
 date_time_str = "Mon Nov 29 21:18:15 +0000 2010"
 # date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
@@ -71,12 +72,12 @@ date_time_str = "Mon Nov 29 21:18:15 +0000 2010"
 array_date = date_time_str.split(" ")
 del array_date[0]
 del array_date[3]
-string = ' '
-list_date = string.join(array_date)
+# string = ' '
+list_date = ' '.join(array_date)
 date_object = datetime.datetime.strptime(list_date, '%b %d %H:%M:%S %Y').date()
 date = datetime.datetime.now().date()
 date2 = date - date_object
 date3 = int(str(date2).split(" ")[0])
-# print(type(date3))
+# print(date3)
 
 # date3 = datetime.datetime.strptime(created_time,"%a %b %d %H:%M:%S +0000 %Y").date()

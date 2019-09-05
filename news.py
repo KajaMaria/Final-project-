@@ -44,6 +44,7 @@ article_title = list(set(article_title))
 
 results = {}
 
+<<<<<<< HEAD
 for headline in article_title:
     results[headline] = api.GetSearch(
         term=headline, count=100, return_json=True)

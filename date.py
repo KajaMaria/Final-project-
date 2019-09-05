@@ -38,36 +38,55 @@ for article in top_headlines['articles']:
 article_title = list(set(article_title))
 results = {}
 
-
 for headline in article_title:
-    results[headline] = api.GetSearch(term=headline, return_json=True)
+    results[headline] = api.GetSearch(
+        term=headline, count=10, return_json=True)
+
+users = []
+for k, v in results.items():
+    for tweet in v['statuses']:
+        user = {}
+        user.update({'screen_name': tweet['user']['screen_name'],
+                     'urls': tweet['entities']['urls'],
+                     'created_at': tweet['user']['created_at'],
+                     'statuses_count': tweet['user']['statuses_count'],
+                     'description': tweet['user']['description']})
+        print(user)
+
 
 # with open("results_page1.json", "w") as file:
 #     file.write(json.dumps(results))
-output = {}
+# output = {}
 
-for k, v in results.items():
-    users = []
-    for i in v['statuses']:
-        users.append(i['user']['screen_name'])
-    output[k] = users
+# for k, v in results.items():
+#     users = []
+#     for i in v['statuses']:
+#         users.append(i['user']['screen_name'])
+#     output[k] = users
     # print(output)
 
 
+# users_by_headline = []
+# for k, v in results.items():
+#     user_info = {}
+#     for tweets in v['statuses']:
+#         user_info.update({'screen_name': tweets['user']['screen_name'],
+#                           'created_at': tweets['user']['created_at'],
+#                           'tweet_count': tweets['user']['statuses_count']})
+#     users_by_headline.append(user_info)
+# print(users_by_headline)
 
-users_by_headline = []
-for k, v in results.items():
-    user_info = {}
-    for tweets in v['statuses']:
-        for tweet in tweets:
-            user_info.update({'screen_name': tweets['user']['screen_name'],
-                              'created_at': tweets['user']['created_at'],
-                              'tweet_count': tweets['user']['statuses_count']})
-    users_by_headline.append(user_info)
-print(users_by_headline)
+
+# creates = [info['created_at'] for info in users_by_headline]
+
+
+# def search(user):
+#     for info in users_by_headline:
+#         if info['created_at'] == user:
+#             return info
+
 
 date_time_str = "Mon Nov 29 21:18:15 +0000 2010"
-# date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
 
 array_date = date_time_str.split(" ")
 del array_date[0]
@@ -79,5 +98,3 @@ date = datetime.datetime.now().date()
 date2 = date - date_object
 date3 = int(str(date2).split(" ")[0])
 # print(date3)
-
-# date3 = datetime.datetime.strptime(created_time,"%a %b %d %H:%M:%S +0000 %Y").date()

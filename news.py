@@ -4,9 +4,13 @@ import twitter
 import credentials
 import json
 from neo4j import GraphDatabase
+from bs4 import BeautifulSoup
+import requests
+import urllib.request
+import time
 
-driver = GraphDatabase.driver(
-    "bolt://localhost:7687", auth=("neo4j", "london"))
+# driver = GraphDatabase.driver(
+#     "bolt://localhost:7687", auth=("neo4j", "london"))
 
 API_KEY = os.environ.get('NEWS_KEY')
 
@@ -40,10 +44,9 @@ article_title = list(set(article_title))
 
 results = {}
 
-
 for headline in article_title:
     results[headline] = api.GetSearch(
-        raw_query="q={k}&count=100", return_json=True)
+        term=headline, count=100, return_json=True)
 
 output = {}
 
@@ -52,6 +55,19 @@ for k, v in results.items():
     for i in v['statuses']:
         users.append(i['user']['screen_name'])
     output[k] = users
+
+users_by_headline = []
+
+for k, v in results.items():
+    user_info = []
+    for tweets in v['statuses']:
+        user_info.append({'screen_name': tweets['user']['screen_name'],
+                          'urls': tweets['user']['urls'],
+                          'tweet_count': tweets['user']['statuses_count'],
+                          'created_at': tweets['user']['created_at'],
+                          'description': tweets['user']['description'],
+                          'url': tweets['user']['entities']['urls']})
+    users_by_headline.append(user_info)
 
 
 def add_node_user(tx, headline, name):
@@ -81,5 +97,9 @@ def return_non_verified_nonprotected_users(results):
                 users.append(tweet['user']['screen_name'])
     return users
 
-
-print(return_non_verified_nonprotected_users(results))
+def find_fake_news_urls(user):
+    for url in user['entities']['description']['urls']:
+        print(url)
+        html = requests.get(url)
+        soup = BeautifulSoup(html.text, 'html.parser')
+        print(soup.prettify())

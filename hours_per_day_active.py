@@ -1,10 +1,11 @@
 import datetime
+from utility import convert_timestamp_to_datetime
 from twitterapi import run_twitter_query, get_tweets_for_user 
 
 QUERY_TWEETS_COUNT_PER_USER = 20
 
-def convert_timestamp_to_datetime(created_time):
-  return datetime.datetime.strptime(created_time,"%a %b %d %H:%M:%S +0000 %Y")
+#def convert_timestamp_to_datetime(created_time):
+#  return datetime.datetime.strptime(created_time,"%a %b %d %H:%M:%S +0000 %Y")
 
 def map_activity_hours(tweets_timestamps):
   activity_map = {}

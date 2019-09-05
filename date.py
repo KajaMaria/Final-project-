@@ -51,50 +51,23 @@ for k, v in results.items():
                      'created_at': tweet['user']['created_at'],
                      'statuses_count': tweet['user']['statuses_count'],
                      'description': tweet['user']['description']})
-        print(user)
+        users.append(user)
 
 
-# with open("results_page1.json", "w") as file:
-#     file.write(json.dumps(results))
-# output = {}
-
-# for k, v in results.items():
-#     users = []
-#     for i in v['statuses']:
-#         users.append(i['user']['screen_name'])
-#     output[k] = users
-    # print(output)
-
-
-# users_by_headline = []
-# for k, v in results.items():
-#     user_info = {}
-#     for tweets in v['statuses']:
-#         user_info.update({'screen_name': tweets['user']['screen_name'],
-#                           'created_at': tweets['user']['created_at'],
-#                           'tweet_count': tweets['user']['statuses_count']})
-#     users_by_headline.append(user_info)
-# print(users_by_headline)
+def average_tweets_per_day(user):
+    date_time_str = user['created_at']
+    array_date = date_time_str.split(" ")
+    del array_date[0]
+    del array_date[3]
+    list_date = ' '.join(array_date)
+    date_object = datetime.datetime.strptime(
+        list_date, '%b %d %H:%M:%S %Y').date()
+    date = datetime.datetime.now().date()
+    date2 = date - date_object
+    date3 = int(str(date2).split(" ")[0])
+    return int(user['statuses_count'])/date3
 
 
-# creates = [info['created_at'] for info in users_by_headline]
-
-
-# def search(user):
-#     for info in users_by_headline:
-#         if info['created_at'] == user:
-#             return info
-
-
-date_time_str = "Mon Nov 29 21:18:15 +0000 2010"
-
-array_date = date_time_str.split(" ")
-del array_date[0]
-del array_date[3]
-# string = ' '
-list_date = ' '.join(array_date)
-date_object = datetime.datetime.strptime(list_date, '%b %d %H:%M:%S %Y').date()
-date = datetime.datetime.now().date()
-date2 = date - date_object
-date3 = int(str(date2).split(" ")[0])
-# print(date3)
+for user in users:
+    if average_tweets_per_day(user) >= 240:
+        print(average_tweets_per_day(user))

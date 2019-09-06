@@ -18,7 +18,6 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
 
 
 def twitter_search_tweets_by_headline():
-
     results = {}
     headlines = retrieve_headlines()
 
@@ -29,7 +28,6 @@ def twitter_search_tweets_by_headline():
 
 
 def twitter_search_users_by_tweets(tweeted_headlines):
-
     users_by_headline = []
  
     for headline, results in tweeted_headlines.items():
@@ -45,9 +43,7 @@ def twitter_search_users_by_tweets(tweeted_headlines):
                          'description': tweet['user']['description']})
         if len(user.keys()) > 0:
             users_by_headline.append(user)
-
     return users_by_headline
-
 
 def run_twitter_query():
   tweeted_headlines = twitter_search_tweets_by_headline()

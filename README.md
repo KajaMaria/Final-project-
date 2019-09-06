@@ -12,9 +12,11 @@ https://www.instagram.com/pry_final_project/
 Install the modules:
 
 ```
-pip3 install python-twitter newsapi neo4j
+pip3 install python-twitter newsapi neo4j redis
 ```
 Run Neo4j DB. Url for running locally is: bolt://localhost:7687
+
+Run Redis server.
 
 Supply credentials for Twitter API, Newsapi and Neo4j DB in credentials.py file.
 

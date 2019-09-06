@@ -1,19 +1,20 @@
-from twitterapi import run_twitter_query
+from redis_cache import retrieve_users
 
+def bio_bot_filter(user_id):
+  bot = ['iamabot', 'imabot', 'justabot']
 
-def bio_bot():
-    results = run_twitter_query()
+  # description has whitespace removed and downcased
+  bot_bio = ''.join(user['description'].split()).lower()
 
-    for user in results:
+  if any(x in bot_bio for x in bot):
+    return True #print("Bot")
+  else:
+    return False #print("Not bot")
 
-        bot = ['iamabot', 'imabot', 'justabot']
-        # description has whitespace removed and downcased
-        bot_bio = ''.join(user['description'].split()).lower()
-
-        if any(x in bot_bio for x in bot):
-            print("Bot")
-        else:
-            print("Not bot")
-
-
-bio_bot()
+# def test_filter():
+#  users = retrieve_users()
+#  res = {}
+#  for user in users:
+#    res[user['id']] = bio_bot_filter(user['id'])
+#
+#  print(res)

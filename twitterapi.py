@@ -17,9 +17,7 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
                   access_token_secret=(API_ACCESS_TOKEN_SECRET),
                   sleep_on_rate_limit=True)
 
-
 def twitter_search_headline():
-
     results = {}
 
     for headline in headlines:
@@ -27,9 +25,17 @@ def twitter_search_headline():
             term=headline, count=100, return_json=True)
     return results
 
+def twitter_search_headline_user():
 
+    output = {}
+
+    for k, v in results.items():
+        users = []
+        for i in v['statuses']:
+            users.append(i['user']['screen_name'])
+        output[k] = users
+        
 def twitter_search_users(retweeted_headlines):
-
     users_by_headline = []
  
     for headline, results in retweeted_headlines.items():
@@ -45,9 +51,7 @@ def twitter_search_users(retweeted_headlines):
                          'description': tweet['user']['description']})
         if len(user.keys()) > 0:
             users_by_headline.append(user)
-
     return users_by_headline
-
 
 def run_twitter_query():
   retweeted_headlines = twitter_search_headline()

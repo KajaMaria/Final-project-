@@ -19,21 +19,10 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
 
 def twitter_search_headline():
     results = {}
-
     for headline in headlines:
         results[headline] = api.GetSearch(
             term=headline, count=100, return_json=True)
     return results
-
-def twitter_search_headline_user():
-
-    output = {}
-
-    for k, v in results.items():
-        users = []
-        for i in v['statuses']:
-            users.append(i['user']['screen_name'])
-        output[k] = users
         
 def twitter_search_users(retweeted_headlines):
     users_by_headline = []

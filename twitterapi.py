@@ -29,15 +29,15 @@ def twitter_search_headline():
     return results
 
 
-# def twitter_search_headline_user():
+def twitter_search_headline_user():
 
-#     output = {}
+    output = {}
 
-#     for k, v in results.items():
-#         users = []
-#         for i in v['statuses']:
-#             users.append(i['user']['screen_name'])
-#         output[k] = users
+    for k, v in results.items():
+        users = []
+        for i in v['statuses']:
+            users.append(i['user']['screen_name'])
+        output[k] = users
 
 
 def twitter_search_users():
@@ -58,12 +58,28 @@ def twitter_search_users():
         if len(user.keys()) > 0:
             users_by_headline.append(user)
 
-    print(users_by_headline)
+    # print(users_by_headline)
     return users_by_headline
 
 
 def run_twitter_query():
     return twitter_search_users()
+
+
+def output_users(query):
+    users = []
+    user = {}
+    for tweet in query['statuses']:
+        user.update({'screen_name': tweet['user']['screen_name'],
+                     'urls': tweet['entities']['urls'],
+                     'verified': tweet['user']['verified'],
+                     'protected': tweet['user']['protected'],
+                     'created_at': tweet['user']['created_at'],
+                     'statuses_count': tweet['user']['statuses_count'],
+                     'description': tweet['user']['description']})
+        if len(user.keys()) > 0:
+            users.append(user)
+    return(users)
 
 
 run_twitter_query()

@@ -5,9 +5,10 @@ import urllib.request
 import time
 from twitterapi import run_twitter_query, twitter_search_users
 
-keywords = ["cookie", "copyright policy", "Data Policy", "Subscriber Agreement", "Your Ad Choices", "Site Feedback", "Advertising",
-            "Guidelines", "Terms of Use", "Privacy Policy", "Accessibility Help", "Parental Guidance", "Get Personalised Newsletters"]
+keywords = ["cookie", "copyright policy", "Data Policy", "Subscriber Agreement", "Your Ad Choices", "Site Feedback", "Advertising", "Careers",
+            "Guidelines", "Terms of Use", "Privacy Policy", "Accessibility Help", "Parental Guidance", "Get Personalised Newsletters", "Risk Management Solutions"]
 only_links = SoupStrainer("a")
+
 
 def find_links(user):
     links = []
@@ -26,25 +27,29 @@ def find_links(user):
                     }
                 )
         site.update({
-            'links': links 
+            'links': links
         })
     return site
 
-def number_of_safeword_links(keywords, site):
-    keywords_hash = { keyword.lower() : 0 for keyword in keywords }
+
+def get_suspicious_sites(keywords, site):
+    # keywords_hash = { keyword.lower() : 0 for keyword in keywords }
     for link in site['links']:
         safeword = 0
-        if link['text'].lower() in keywords_hash.keys():
-            safeword += 1
-        site.update(
-            {
-                'safeword': safeword            
-            }
-        )
-    return site
+        for keyword in keywords:
+            if link['text'].lower().strip() in keyword.lower():
+                safeword += 1
+        site.update({'safeword': safeword})
+    if site['safeword'] < 2:
+        return site
+
+def get_sites_with_user_mentioned(site, screen_name):
+    for link in site['links']:
+        if screen_name.lower().strip() in link['text'].lower().strip():
+            return site
 
 users = run_twitter_query()
 
 for user in users:
     page_links = find_links(user)
-    print(number_of_safeword_links(site=page_links, keywords=keywords))
+    print(get_sites_with_user_mentioned(site=page_links, screen_name=users['screen_name']))

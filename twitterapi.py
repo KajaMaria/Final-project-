@@ -68,8 +68,8 @@ def run_twitter_query():
 
 def output_users(query):
     users = []
-    user = {}
     for tweet in query['statuses']:
+        user = {}
         user.update({'screen_name': tweet['user']['screen_name'],
                      'urls': tweet['entities']['urls'],
                      'verified': tweet['user']['verified'],
@@ -79,6 +79,7 @@ def output_users(query):
                      'description': tweet['user']['description']})
         if len(user.keys()) > 0:
             users.append(user)
+    print(users)    
     return(users)
 
 

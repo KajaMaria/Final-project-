@@ -17,6 +17,7 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
                   access_token_secret=(API_ACCESS_TOKEN_SECRET),
                   sleep_on_rate_limit=True)
 
+
 def twitter_search_headline():
     results = {}
 
@@ -24,6 +25,7 @@ def twitter_search_headline():
         results[headline] = api.GetSearch(
             term=headline, count=100, return_json=True)
     return results
+
 
 def twitter_search_headline_user():
 
@@ -34,10 +36,11 @@ def twitter_search_headline_user():
         for i in v['statuses']:
             users.append(i['user']['screen_name'])
         output[k] = users
-        
+
+
 def twitter_search_users(retweeted_headlines):
     users_by_headline = []
- 
+
     for headline, results in retweeted_headlines.items():
         user = {}
         for tweet in results['statuses']:
@@ -53,11 +56,17 @@ def twitter_search_users(retweeted_headlines):
             users_by_headline.append(user)
     return users_by_headline
 
+
 def run_twitter_query():
-  retweeted_headlines = twitter_search_headline()
-  return twitter_search_users(retweeted_headlines)
+    retweeted_headlines = twitter_search_headline()
+    return twitter_search_users(retweeted_headlines)
 
-def get_tweets_for_user(start_date,end_date,user_id,count):
-  return api.GetUserTimeline(user_id=user_id,count=count)
 
-#run_twitter_query()
+def get_tweets_for_user(start_date, end_date, user_id, count):
+    return api.GetUserTimeline(user_id=user_id, count=count)
+
+
+def get_user(user_id, count):
+    return api.GetUserTimeline(user_id=user_id, count=count)
+
+# run_twitter_query()

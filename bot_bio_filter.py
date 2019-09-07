@@ -1,6 +1,6 @@
-from redis_cache import retrieve_users
+#from redis_cache import retrieve_users
 
-def bio_bot_filter(user_id):
+def bot_bio_filter(user_id):
   bot = ['iamabot', 'imabot', 'justabot']
 
   # description has whitespace removed and downcased
@@ -15,6 +15,6 @@ def bio_bot_filter(user_id):
 #  users = retrieve_users()
 #  res = {}
 #  for user in users:
-#    res[user['id']] = bio_bot_filter(user['id'])
+#    res[user['id']] = bot_bio_filter(user['id'])
 #
 #  print(res)

@@ -3,7 +3,7 @@ from bs4 import SoupStrainer
 import requests
 import urllib.request
 import time
-import twitterapi
+from twitterapi import get_tweets_with_links
 
 keywords = ["cookie", "copyright policy", "Data Policy", "Subscriber Agreement", "Your Ad Choices", "Site Feedback", "Advertising",
             "Guidelines", "Terms of Use", "Privacy Policy", "Accessibility Help", "Parental Guidance", "Get Personalised Newsletters"]
@@ -37,14 +37,21 @@ def probability_of_fake(keywords, links):
             return True
 
 
-def get_tweets_with_links():
-    api = twitterapi.api
-    return api.GetSearch(term="cyberpunk", count=5, return_json=True)
+#def get_tweets_with_links():
+#    api = twitterapi.api
+#    return api.GetSearch(term="cyberpunk", count=5, return_json=True)
 
 
-results = get_tweets_with_links()
-users = twitterapi.output_users(results)
+def fake_news_filter(user):
+  pass
 
-for user in users:
+def output_users(results):
+  pass
+
+def scan_for_fake_news():
+  results = get_tweets_with_links()
+  users = output_users(results)
+
+  for user in users:
     # page_links = find_links(user)
     print(probability_of_fake(links=[{'text': 'cookie'}], keywords=keywords))

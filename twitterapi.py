@@ -31,9 +31,9 @@ def twitter_search_users_by_tweets(tweeted_headlines):
     users_by_headline = []
  
     for headline, results in tweeted_headlines.items():
-        user = {}
-        for tweet in results['statuses']:
-            user.update({'screen_name': tweet['user']['screen_name'],
+      user = {}
+      for tweet in results['statuses']:
+        user.update({'screen_name': tweet['user']['screen_name'],
                          'id': tweet['user']['id'],
                          'urls': tweet['entities']['urls'],
                          'verified': tweet['user']['verified'],
@@ -61,5 +61,8 @@ def get_user_followers_list(user_id):
 
 def get_user(user_id):
   return api.GetUser(user_id=user_id)
+
+def get_tweets_with_links(): 
+  return api.GetSearch(term="cyberpunk", count=5, return_json=True) 
 
 run_twitter_query()

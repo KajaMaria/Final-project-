@@ -13,12 +13,12 @@ only_links = SoupStrainer("a")
 def find_links(user):
     links = []
     if not user['urls']:
-        return "no links"
+        return None
     else:
         url = user['urls'][0]['expanded_url']
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser",
-                            parse_only=only_links)
+                             parse_only=only_links)
         site = {'url': url}
         for link in soup.find_all('a'):
             if link.string:
@@ -46,10 +46,11 @@ def get_suspicious_sites(keywords, site):
         return site
 
 
+
 def get_sites_with_user_mentioned(page_links, user):
-    screen_name = user['screen_name']
     links = page_links['links']
-    for link in links:
+    screen_name = user['screen_name']
+    for link in links: 
         if screen_name in link['text']:
             return {'screen_name': screen_name, 'url': page_links['url']}
 
@@ -58,5 +59,5 @@ users = run_twitter_query()
 
 for user in users:
     page_links = find_links(user)
-    print(page_links)
-    # print(get_sites_with_user_mentioned(page_links=page_links, user=user))
+    print(get_sites_with_user_mentioned(page_links={'url': 'dodgy.com', 'links':[{'text': 'kaja'}]}, user={'screen_name': 'kaja'}))
+

@@ -26,14 +26,13 @@ def twitter_search_tweets_by_headline():
             term=headline, count=100, return_json=True)
     return results
 
-
 def twitter_search_users_by_tweets(tweeted_headlines):
     users_by_headline = []
- 
+
     for headline, results in tweeted_headlines.items():
-      user = {}
-      for tweet in results['statuses']:
-        user.update({'screen_name': tweet['user']['screen_name'],
+        user = {}
+        for tweet in results['statuses']:
+            user.update({'screen_name': tweet['user']['screen_name'],
                          'id': tweet['user']['id'],
                          'urls': tweet['entities']['urls'],
                          'verified': tweet['user']['verified'],
@@ -45,13 +44,15 @@ def twitter_search_users_by_tweets(tweeted_headlines):
             users_by_headline.append(user)
     return users_by_headline
 
+
 def run_twitter_query():
   tweeted_headlines = twitter_search_tweets_by_headline()
   users = twitter_search_users_by_tweets(tweeted_headlines)
   store_users(users)
 
-def get_tweets_for_user(start_date,end_date,user_id,count):
-  return api.GetUserTimeline(user_id=user_id,count=count)
+
+def get_tweets_for_user(user_id, count, start_date=0, end_date=0):
+    return api.GetUserTimeline(user_id=user_id, count=count)
 
 def get_user_following_list(user_id):
   return api.GetFriendIDs(user_id=user_id)

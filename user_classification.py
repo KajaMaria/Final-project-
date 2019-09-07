@@ -1,12 +1,11 @@
-from classifier import classify_user, estimate_and_normalize_features
-from average_tweets_per_day_filter import filter_by_average_tweets_per_day
+from classifier import knn_classifier, normalize_features
+from average_tweets_per_day_filter import average_tweets_per_day_filter
 from verified_filter import unverified_and_unprotected_user_filter
 from bot_bio_filter import bot_bio_filter
 from fake_news_filter import fake_news_filter
 from active_hours_per_day_filter import active_hours_per_day_filter
+from timeline_hashtags_filter import timeline_hashtags_filter
 
-def set_filters_order(filters):
-  pass
 
 def run_filters_on_user(user,filters):
   if unverified_and_unprotected_user_filter(user):
@@ -14,10 +13,11 @@ def run_filters_on_user(user,filters):
   
   filters = set_filters_order(filters)
   filter_function = {  
-      'tweets_per_day_ratio': filter_by_average_tweets_per_day,
+      'tweets_per_day_ratio': average_tweets_per_day_filter,
       'bot_bio': bot_bio_filter,
       'fake_news': fake_news_filter,
-      'hours_per_day': active_hours_per_day_filter
+      'hours_per_day': active_hours_per_day_filter,
+      'timeline_hashtags': timeline_hashtags_filter
   }
 
   results = {}
@@ -26,8 +26,12 @@ def run_filters_on_user(user,filters):
   
   return results
 
-def get_classification_score(user_data_vector):
-  feature_vector = estimate_and_normalize_features(user_data_vector)
-  bot_score = classify_user(feature_vector)
-  return bot_score
+def run_knn_classifier(filters_score_vector):
+  feature_vector = normalize_features(filters_score_vector)
+  return knn_classifier(feature_vector)
+
+def classify_user(user, filters):
+  filters_scores = run_filters_on_user(user,filters)
+  filters_score_vector = [filter_result for filter_name, filter_result in filters_scores]
+  return run_knn_classifier(filters_score_vector)
 

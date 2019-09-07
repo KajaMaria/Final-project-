@@ -12,12 +12,19 @@ https://www.instagram.com/pry_final_project/
 Install the modules:
 
 ```
-pip3 install python-twitter newsapi neo4j redis
+pip3 install python-twitter newsapi neo4j redis beautifulsoup4 psycopg2
 ```
-Run Neo4j DB. Url for running locally is: bolt://localhost:7687
 
-Run Redis server.
+### Running the project:
 
-Supply credentials for Twitter API, Newsapi and Neo4j DB in credentials.py file.
+Install Postgres server, Redis server and Neo4j to run the project.
+
+Supply all necessary credentials in credentials.py file, including Twitter developer and Newsapi credentials.
+
+Start Redis, Postgresql and Neo4j servers.
+
+Neo4j url for running locally is: bolt://localhost:7687
+
+### Group Notes:
 
 For Heroku Scheduler: apsschedule==3.0.0 in requirements.txt

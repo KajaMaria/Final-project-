@@ -1,18 +1,20 @@
 from neo4j import GraphDatabase
 # from bs4 import BeautifulSoup
-import requests
-import urllib.request
-import time
-from twitterapi import run_twitter_query
-import news
+#import requests
+#import urllib.request
+#import time
+#from twitterapi import run_twitter_query
+#import news
 import credentials
-import json
+#import json
+from redis_cache import retrieve_users
 
 driver = GraphDatabase.driver(
-    "bolt://localhost:7687", auth=("neo4j", "dansbugs"))
+    "bolt://localhost:7687", auth=("neo4j", "neo5j")#"dansbugs"))
 
+session = driver.session()
 
-def add_node_user(tx, name):
+def add_user_node(tx, name):
     tx.run("MERGE (a:User {name: $name}) ",
            #    "MERGE (h:Headline {headline: $headline}) "
            #    "MERGE (a)-[:RETWEETED]->(h)",
@@ -23,11 +25,20 @@ def print_nodes(tx):
     for record in tx.run("MATCH (n) RETURN n"):
         print(record)
 
+def create_node(data):
+  for element in data:
+    function = {
+      'user': add_user_node,
+      'headline': add_headline_node,
+      'relationship': add_relationship_node
+    }
+    session.write_transaction(element['type'],element['data'])
 
-with driver.session() as session:
-    output = run_twitter_query()
-    print(output)
-    for user in output:
-        print(user)
-        session.write_transaction(add_node_user, user['screen_name'])
-    session.read_transaction(print_nodes)
+  
+      #with driver.session() as session:
+      #    users = retrieve_users()
+      #    print(users)
+      #    for user in users:
+      #        print(user)
+      #        session.write_transaction(add_node_user, user['screen_name'])
+      #    session.read_transaction(print_nodes)

@@ -36,7 +36,7 @@ def get_user_activity_hours_per_day(start_date, end_date,user_id):
   activity_dict = map_activity_hours(timestamps)
   return calculate_average_activity_hours_per_day(activity_dict)
 
-def filter_by_activity_hours_per_day(users,start_date,end_date):
+def active_hours_per_day_filter(users,start_date,end_date):
   activity_info_per_user = {}
   total_number_of_days = (start_date - end_date)
   for user in users:
@@ -46,5 +46,5 @@ def filter_by_activity_hours_per_day(users,start_date,end_date):
 
 #def test_filter():
 #  users = retrieve_users()
-#  print(filter_by_activity_hours_per_day(users,0,0))
+#  print(active_hours_per_day_filter(users,0,0))
 

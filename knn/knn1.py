@@ -4,7 +4,17 @@ import warnings
 from collections import Counter
 import numpy as np
 
+# Intruction:
 # pip3 install numpy 
+# You can change value in the object. b is for bots potentially 
+# but not sure how are they going to look like on the graph?
+
+# totalDistanceSquared=w0∗(V1[0]−V2[0])2+w1∗(V1[1]−V2[1])2+w2∗(V1[2]−V2[2])2+w3∗(V1[3]−V2[3])2+w4∗(V1[4]−V2[4])2
+# 𝐷𝑖𝑠𝑡𝑥𝑦 = (
+# 𝑚
+# 𝑘=1 𝑥𝑖𝑘 − 𝑥𝑗𝑘 )
+# 2
+ 
 
 dataset = {'k':[[1,2],[2,3],[2,2]], 'b':[[6,7],[7,8],[7,7]]}
 new_object = [1,1]
@@ -26,7 +36,7 @@ def k_nearest_n(data, predict, k=3):
 
     return vote_result 
 
-result = k_nearest_n(dataset, new_object, k=3)
+result = k_nearest_n(dataset, new_object1, k=3)
 print(result)
 
 # do we have two feature dinmention?

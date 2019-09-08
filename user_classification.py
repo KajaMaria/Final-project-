@@ -1,10 +1,13 @@
-from classifier import knn_classifier, normalize_features
-from average_tweets_per_day_filter import average_tweets_per_day_filter
-from verified_filter import unverified_and_unprotected_user_filter
-from bot_bio_filter import bot_bio_filter
-from fake_news_filter import fake_news_filter
-from active_hours_per_day_filter import active_hours_per_day_filter
-from timeline_hashtags_filter import timeline_hashtags_filter
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+from knn_classifier.classifier import knn_classifier, normalize_features
+from filters.average_tweets_per_day_filter import average_tweets_per_day_filter
+from filters.verified_filter import unverified_and_unprotected_user_filter
+from filters.bot_bio_filter import bot_bio_filter
+from filters.fake_news_filter import fake_news_filter
+from filters.active_hours_per_day_filter import active_hours_per_day_filter
+from filters.timeline_hashtags_filter import timeline_hashtags_filter
 
 
 def run_filters_on_user(user,filters):

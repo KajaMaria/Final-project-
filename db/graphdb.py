@@ -1,16 +1,14 @@
 from neo4j import GraphDatabase
-# from bs4 import BeautifulSoup
-#import requests
-#import urllib.request
-#import time
-#from twitterapi import run_twitter_query
-#import news
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 import credentials
-#import json
-from redis_cache import retrieve_users
+
+GRAPHENEDB_BOLT_USER = os.environ.get('GRAPHENEDB_BOLT_USER')
+GRAPHENEDB_BOLT_PASSWORD = os.environ.get('GRAPHENEDB_BOLT_PASSWORD')
+GRAPHENEDB_BOLT_URL = os.environ.get('GRAPHENEDB_BOLT_URL') 
 
 driver = GraphDatabase.driver(
-    "bolt://localhost:7687", auth=("neo4j", "neo5j")#"dansbugs"))
+  GRAPHENEDB_BOLT_URL,auth=(GRAPHENEDB_BOLT_USER ,GRAPHENEDB_BOLT_PASSWORD))
 
 session = driver.session()
 

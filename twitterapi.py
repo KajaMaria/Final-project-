@@ -63,7 +63,9 @@ def get_user_followers_list(user_id):
 def get_user(user_id):
   return api.GetUser(user_id=user_id)
 
-def get_tweets_with_links(): 
-  return api.GetSearch(term="cyberpunk", count=5, return_json=True) 
+def get_tweets_with_users(): 
+  tweeted_headlines = twitter_search_tweets_by_headline()
+  users = twitter_search_users_by_tweets(tweeted_headlines)
+  return users
 
 run_twitter_query()

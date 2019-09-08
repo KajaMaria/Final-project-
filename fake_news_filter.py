@@ -3,7 +3,8 @@ from bs4 import SoupStrainer
 import requests
 import urllib.request
 import time
-from twitterapi import run_twitter_query
+from twitterapi import get_tweets_with_users
+from postgresql_storage import create_news_site_entry
 
 keywords = ["cookie", "copyright policy", "Data Policy", "Subscriber Agreement", "Your Ad Choices", "Site Feedback", "Advertising", "Careers",
             "Guidelines", "Terms of Use", "Privacy Policy", "Accessibility Help", "Parental Guidance", "Get Personalised Newsletters", "Risk Management Solutions"]
@@ -35,33 +36,44 @@ def find_links(user):
         return site
 
 
-def get_suspicious_sites(keywords, site):
+def get_suspicious_sites(keywords, site, user):
+    safeword = 0
     for link in site['links']:
-        safeword = 0
         for keyword in keywords:
             if link['text'].lower().strip() in keyword.lower():
                 safeword += 1
-        site.update({'safeword': safeword})
+    site.update({'safeword': safeword})
     if site['safeword'] < 2:
+        entry = [user['screen_name'], user['id'], site['url']]
+        create_news_site_entry(entry)
         return site
 
 
-def get_sites_with_user_mentioned(page_links, user):
-    links = page_links['links']
+def get_sites_with_user_mentioned(site, user):
+    links = site['links']
     screen_name = user['screen_name']
+
     for link in links:
         if screen_name in link['text']:
-            return {'screen_name': screen_name, 'url': page_links['url']}
+            entry = [user['screen_name'], user['id'], site['url']]
+            create_news_site_entry(entry)
+            return {'screen_name': screen_name, 'url': site['url']}
 
 
 def filter_by_site_links(user):
     site = find_links(user)
-    if get_sites_with_user_mentioned(site, user) != None:
-        print('failed at first method')
+    if get_sites_with_user_mentioned(site=site, user=user) != None:
+        print('user failed first filter')
         return True
     else:
-        if get_suspicious_sites(keywords, site) != None:
-            print('failed at second method')
+        if get_suspicious_sites(keywords=keywords, site=site, user=user) != None:
+            print('user failed at second filter')
             return True
         else:
             return False
+
+
+users = get_tweets_with_users()
+
+for user in users:
+    filter_by_site_links(user)

@@ -26,12 +26,12 @@ def create_news_site_entry(entry):
 try:
   cursor = connection.cursor()
 except psycopg2.DatabaseError as e:
-  print('Failed to connect to Postgres db {}'.format(e));
-finally:
-  if connection:
-    connection.commit()
-    cursor.close()
-    connection.close()
+  print('Failed to connect to Postgres db {}'.format(e))
+# finally:
+#   if connection:
+#     connection.commit()
+#     cursor.close()
+#     connection.close()
 
 def test_connection():
   create_news_site_entry(('DROP TABLE news_sites;','147852369','https://tryme.com'))

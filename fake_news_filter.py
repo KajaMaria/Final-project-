@@ -71,9 +71,3 @@ def filter_by_site_links(user):
             return True
         else:
             return False
-
-
-users = get_tweets_with_users()
-
-for user in users:
-    filter_by_site_links(user)

@@ -3,7 +3,7 @@ from bs4 import SoupStrainer
 import requests
 import urllib.request
 import time
-from twitterapi import run_twitter_query, twitter_search_users
+from twitterapi import run_twitter_query
 
 keywords = ["cookie", "copyright policy", "Data Policy", "Subscriber Agreement", "Your Ad Choices", "Site Feedback", "Advertising", "Careers",
             "Guidelines", "Terms of Use", "Privacy Policy", "Accessibility Help", "Parental Guidance", "Get Personalised Newsletters", "Risk Management Solutions"]
@@ -65,9 +65,3 @@ def filter_by_site_links(user):
             return True
         else:
             return False
-
-
-users = run_twitter_query()
-
-for user in users:
-    print(filter_by_site_links(user))

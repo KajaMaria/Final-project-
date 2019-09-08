@@ -1,8 +1,7 @@
 import os
 import twitter
 import credentials
-import time
-from news import headlines
+from redis_cache import store_users, retrieve_headlines
 
 # Init
 API_CONSUMER_KEY = os.environ.get('CONSUMER_KEY')
@@ -17,17 +16,20 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
                   access_token_secret=(API_ACCESS_TOKEN_SECRET),
                   sleep_on_rate_limit=True)
 
-def twitter_search_headline():
+
+def twitter_search_tweets_by_headline():
     results = {}
+    headlines = retrieve_headlines()
+
     for headline in headlines:
         results[headline] = api.GetSearch(
             term=headline, count=100, return_json=True)
     return results
-        
-def twitter_search_users(retweeted_headlines):
+
+def twitter_search_users_by_tweets(tweeted_headlines):
     users_by_headline = []
- 
-    for headline, results in retweeted_headlines.items():
+
+    for headline, results in tweeted_headlines.items():
         user = {}
         for tweet in results['statuses']:
             user.update({'screen_name': tweet['user']['screen_name'],
@@ -42,11 +44,26 @@ def twitter_search_users(retweeted_headlines):
             users_by_headline.append(user)
     return users_by_headline
 
+
 def run_twitter_query():
-  retweeted_headlines = twitter_search_headline()
-  return twitter_search_users(retweeted_headlines)
+  tweeted_headlines = twitter_search_tweets_by_headline()
+  users = twitter_search_users_by_tweets(tweeted_headlines)
+  store_users(users)
 
-def get_tweets_for_user(start_date,end_date,user_id,count):
-  return api.GetUserTimeline(user_id=user_id,count=count)
 
-#run_twitter_query()
+def get_tweets_for_user(user_id, count, start_date=0, end_date=0):
+    return api.GetUserTimeline(user_id=user_id, count=count)
+
+def get_user_following_list(user_id):
+  return api.GetFriendIDs(user_id=user_id)
+
+def get_user_followers_list(user_id):
+  return api.GetFriendIDs(user_id=user_id)
+
+def get_user(user_id):
+  return api.GetUser(user_id=user_id)
+
+def get_tweets_with_links(): 
+  return api.GetSearch(term="cyberpunk", count=5, return_json=True) 
+
+run_twitter_query()

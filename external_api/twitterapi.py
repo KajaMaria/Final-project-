@@ -1,7 +1,6 @@
 import os
 import twitter
 import credentials
-from redis_cache import store_users, retrieve_headlines
 
 # Init
 API_CONSUMER_KEY = os.environ.get('CONSUMER_KEY')
@@ -17,10 +16,8 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
                   sleep_on_rate_limit=True)
 
 
-def twitter_search_tweets_by_headline():
+def twitter_search_tweets_by_headlines(headlines):
     results = {}
-    headlines = retrieve_headlines()
-
     for headline in headlines:
         results[headline] = api.GetSearch(
             term=headline, count=100, return_json=True)
@@ -45,8 +42,8 @@ def twitter_search_users_by_tweets(tweeted_headlines):
     return users_by_headline
 
 
-def run_twitter_query():
-  tweeted_headlines = twitter_search_tweets_by_headline()
+def run_twitter_query(headlines):
+  tweeted_headlines = twitter_search_tweets_by_headlines(headlines)
   users = twitter_search_users_by_tweets(tweeted_headlines)
   store_users(users)
 
@@ -66,4 +63,3 @@ def get_user(user_id):
 def get_tweets_with_links(): 
   return api.GetSearch(term="cyberpunk", count=5, return_json=True) 
 
-run_twitter_query()

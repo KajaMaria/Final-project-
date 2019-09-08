@@ -1,3 +1,5 @@
 credentials.py
 *.json
 __pycache__/
+dump.rdb
+.ipynb_checkpoints/

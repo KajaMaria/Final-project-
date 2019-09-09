@@ -3,7 +3,7 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 from utility import convert_timestamp_to_datetime
-from external_api.twitterapi import get_tweets_for_user 
+from external_api.twitter_api import get_tweets_for_user 
 #from db.redis_cache import retrieve_users
 
 QUERY_TWEETS_COUNT_PER_USER = 20

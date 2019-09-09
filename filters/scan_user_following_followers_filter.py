@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 #from users_filter import run_filters, SUSPECTED_BOT_SCORE
-from external_api.twitterapi import get_user_following_list, get_user_followers_list, get_user
+from external_api.twitter_api import get_user_following_list, get_user_followers_list, get_user
 from db.graphdb import create_node
 from db.redis_cache import retrieve_users
 

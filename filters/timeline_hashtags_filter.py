@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
-from external_api.twitterapi import get_tweets_for_user
+from external_api.twitter_api import get_tweets_for_user
 
 COUNT = 200
 TWEETED_TAGS_THREASHOLD = 3

@@ -3,7 +3,10 @@ from bs4 import SoupStrainer
 import requests
 import urllib.request
 import time
-from twitterapi import get_tweets_with_links
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+from external_api.twitter_api import get_tweets_with_links
 
 keywords = ["cookie", "copyright policy", "Data Policy", "Subscriber Agreement", "Your Ad Choices", "Site Feedback", "Advertising",
             "Guidelines", "Terms of Use", "Privacy Policy", "Accessibility Help", "Parental Guidance", "Get Personalised Newsletters"]

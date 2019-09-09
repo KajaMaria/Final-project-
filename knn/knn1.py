@@ -2,7 +2,7 @@ import math
 from math import sqrt
 import warnings
 from collections import Counter
-# import numpy as np
+import numpy as np
 
 # Intruction:
 # pip3 install numpy
@@ -16,32 +16,33 @@ from collections import Counter
 # 2
 
 
-dataset = [3, 4, 5, 8, 11]
+dataset = [[3, 4, 5, 8, 11], [1, 2, 4, 3, 9], [
+    4, 4, 7, 3, 4], [1, 4, 9, 8, 8], [7, 5, 3, 8, 9]]
 new_object = [2, 1, 4, 8, 10]
 
 
-# def euclideanDistance(vector1, vector2, length):
-#     distance = 0
-#     for x in range(length):
-#         distance += (vector1[x] - vector2[x]) ** 2
-#     return math.sqrt(distance)
-
-
-# print(euclideanDistance(dataset, new_object, 3))
-
-
-def k_nearest_n(data, predict, k=3):
+def k_nearest_n(data, predict, k=5):
     if len(data) >= k:
         warnings.warn('K is set to value smaller than deciding groups')
     distance = []
-    vector1 = data
     vector2 = predict
-    # range = len(data)
-    single_vector_comparison = []
-    for x in range(0, 5):
-        single_vector_comparison.append(pow((vector1[x] - vector2[x]), 2))
 
-    distance.append(single_vector_comparison)
+    for each_list in data:
+        single_vector_comparison = []
+        index = 0
+        for x in each_list:
+            single_vector_comparison.append((x - vector2[index]) ** 2)
+            index = index + 1
+
+        distance.append(single_vector_comparison)
+
+    print(distance)
+    # single_vector_comparison.append((x - vector2))
+
+    # print(single_vector_comparison)
+    # distance.append(single_vector_comparison)
+
+    # print(distance)
 
     #     e_distance = (vector1[i] - vector2)**2
     #     print(e_distance)
@@ -51,15 +52,15 @@ def k_nearest_n(data, predict, k=3):
     # votes = [i][1] for i in sorted(distances)[:k]]
     # # print(Counter(votes).most_common(1))
     # vote_result= Counter(votes).most_common(1)[0][0]
+    # print(vote_result)
 
-    # return vote_result
+    # result= k_nearest_n(dataset, new_object2)
+    # print(result)
+
+    # do we have two feature dinmention?
+    # dinamic number of features?
+    # how many neighbours so we have? more than 3?
+    # is it euclidean distance?
 
 
-# result= k_nearest_n(dataset, new_object2)
-# print(result)
-
-# do we have two feature dinmention?
-# dinamic number of features?
-# how many neighbours so we have? more than 3?
-# is it euclidean distance?
-k_nearest_n(dataset, new_object, 5)
+k_nearest_n(dataset, new_object)

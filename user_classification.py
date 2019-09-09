@@ -8,19 +8,22 @@ from filters.bot_bio_filter import bot_bio_filter
 from filters.fake_news_filter import fake_news_filter
 from filters.active_hours_per_day_filter import active_hours_per_day_filter
 from filters.timeline_hashtags_filter import timeline_hashtags_filter
-
+from filters.retweet_count_filter import retweet_ratio_filter
+from filters.scan_user_following_followers_filter import bot_following_ratio_filter, bot_followers_ratio_filter
 
 def run_filters_on_user(user,filters):
   if unverified_and_unprotected_user_filter(user):
     return 'Account is either verified or protected. Not a bot.'
   
-  filters = set_filters_order(filters)
   filter_function = {  
       'tweets_per_day_ratio': average_tweets_per_day_filter,
       'bot_bio': bot_bio_filter,
       'fake_news': fake_news_filter,
       'hours_per_day': active_hours_per_day_filter,
-      'timeline_hashtags': timeline_hashtags_filter
+      'timeline_hashtags': timeline_hashtags_filter,
+      'retweets_ratio': retweet_ratio_filter,
+      'bot_following': bot_following_ratio_filter,
+      'bot_follower': bot_followers_ratio_filter_
   }
 
   results = {}

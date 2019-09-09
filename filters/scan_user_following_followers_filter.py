@@ -31,6 +31,11 @@ def get_user_following_followers_ids(user_id):
 #      create_node({'type': 'user', 'data': {'screen_name': follower['screen_name'], 'id': follower_id}})
 #      create_node({'type': 'relationship', 'data':{'type':'FOLLOWING', 'direction': [follower_id, user_id], 'user': user, 'follower': follower}})
 #
+def bot_following_ratio_filter():
+  pass
+
+def bot_followers_ratio_filter():
+  pass
 
 def test_filter():
   users = retrieve_users()

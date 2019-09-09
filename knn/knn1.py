@@ -1,11 +1,8 @@
 import math
 from math import sqrt
-import warnings
-from collections import Counter
 import operator
 import random
-import math
-import operator
+
 
 # Intruction:
 # pip3 install numpy

@@ -26,6 +26,7 @@ def retrieve_list_of_news_sites():
 def create_news_site_entry(entries):
   SQL = "INSERT INTO news_sites (related_account_name, related_account_id, url) VALUES (%s,%s,%s);"
   for entry in entries:
+    print(entry)
     cursor.execute(SQL, entry)
   connection.commit()
 

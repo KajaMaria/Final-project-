@@ -4,9 +4,9 @@ import urllib.request
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
-from external_api.twitter_api import get_tweets_with_links
+from external_api.twitter_api import get_tweets_with_users
 from db.postgresql_storage import create_news_site_entry
-
+from db.redis_cache import retrieve_headlines
 
 keywords = ["cookie", "copyright policy", "Data Policy", "Subscriber Agreement", "Your Ad Choices", "Site Feedback", "Advertising", "Careers",
             "Guidelines", "Terms of Use", "Privacy Policy", "Accessibility Help", "Parental Guidance", "Get Personalised Newsletters", "Risk Management Solutions"]
@@ -46,7 +46,7 @@ def get_suspicious_sites(keywords, site, user):
                 safeword += 1
     site.update({'safeword': safeword})
     if site['safeword'] < 2:
-        entry = [user['screen_name'], user['id'], site['url']]
+        entry = [[user['screen_name'], user['id'], site['url']]]
         create_news_site_entry(entry)
         return site
 
@@ -57,7 +57,7 @@ def get_sites_with_user_mentioned(site, user):
 
     for link in links:
         if screen_name in link['text']:
-            entry = [user['screen_name'], user['id'], site['url']]
+            entry = [[user['screen_name'], user['id'], site['url']]]
             create_news_site_entry(entry)
             return {'screen_name': screen_name, 'url': site['url']}
 
@@ -73,3 +73,9 @@ def filter_by_site_links(user):
             return True
         else:
             return False
+
+headlines = retrieve_headlines()
+users = get_tweets_with_users(headlines)
+
+for user in users:
+    filter_by_site_links(user)

@@ -24,7 +24,7 @@ new_object = [2, 1, 4, 8, 10]
 vector1 = [1, 2, 3, 4, 5]
 vector2 = [6, 7, 8, 9, 10]
 
-def euclidean_distance(vector1, vector2):
+def euclidean_distance(vector1, vector2, length):
     vector_length = len(vector1) 
     squared_distance = 0
     for i in range(vector_length):
@@ -32,14 +32,18 @@ def euclidean_distance(vector1, vector2):
 
     return squared_distance
 
-def k_nearest_n(distance, data2, k=5):
-    # if len(distance) >= k:
-    #     distance.warn('K is set to value smaller than deciding groups')
-    distance.sort(key=operator.itemgetter(1))
-    neighbors = []
-for x in range(k):
-   neighbors.append(distance[x][0])
-print(neighbors)
+def k_nearest_n(testSet, testInstance, k):
+    distances = []
+    length = len(testInstance)-1
+    for x in range(len(testSet)):
+        dist = euclidean_distance(testInstance, testSet[x], length)
+        print(dist)
+        distances.append((testSet[x], dist))
+    distances.sort(key=operator.itemgetter(1))
+    neighbor=[]
+    for x in range(k):
+        neighbor.append(distances[x][0])
+    print(neighbor)
 
 #     e_distance = (vector1[i] - vector2)**2
 #     print(e_distance)
@@ -54,4 +58,5 @@ print(neighbors)
 # result= k_nearest_n(dataset, new_object2)
 # print(result)
 
-euclidean_distance(vector1, vector2)
+# euclidean_distance(vector1, vector2)
+k_nearest_n(vector1,vector2,3)

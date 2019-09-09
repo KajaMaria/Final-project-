@@ -1,17 +1,16 @@
 import os
- 
-os.environ['CONSUMER_KEY'] = 'UzNX8xsWnSvX1GJH7A2BIVxjV'
-os.environ['CONSUMER_SECRET'] = 'Fv0sfgz6FGVVa6c1twD5GWCNlq5ekvAIONKNLEda23H9g8U6Iq'
-os.environ['ACCESS_TOKEN_KEY'] = '1133592691118358528-GhB7pISQIV7xPTLvA8rO982wxnIaag'
-os.environ['ACCESS_TOKEN_SECRET'] = 'okZpj4NKMhTQOpfxue4xtQTwc1MKyEgqNhGdHR33OR0Dr'
-os.environ['NEWS_KEY'] = '61c150042a8148df9bf88efe2d72a256'
+
+os.environ['CONSUMER_KEY'] = '6BdpipUtMLSp1RXIfuPJSk1l3'
+os.environ['CONSUMER_SECRET'] = 'zNCjOrq4oDc4wbiSPGM9BU7AiKCcn2NNobReopjDjTBLv8hT11'  
+os.environ['ACCESS_TOKEN_KEY'] = '115197781-lmZUaSo84T6a02TvZCyH3rp5lO9rsF2pxFwME93o'
+os.environ['ACCESS_TOKEN_SECRET'] = 'WacbDHSJNy7XyrVc5kRMWa6XiFYkUgGD3bgfhzWaftxwF'
+os.environ['NEWS_KEY'] = 'a0a5721dc4404755a8066dca7b386a21'
 os.environ['GRAPHENEDB_BOLT_USER'] = 'neo4j'
-os.environ['GRAPHENEDB_BOLT_PASSWORD'] = 'london'
+os.environ['GRAPHENEDB_BOLT_PASSWORD'] = 'neo5j'
 os.environ['GRAPHENEDB_BOLT_URL'] = 'bolt://localhost:7687'
 os.environ['PGHOST'] = 'localhost'
 os.environ['PGDATABASE'] = 'pry'
-os.environ['PGPASSWORD'] = ''
-os.environ['PGUSER'] = 'daniel'
-
+os.environ['PGPASSWORD'] = 'root'
+os.environ['PGUSER'] = 'me'
 
 

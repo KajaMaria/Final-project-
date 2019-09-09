@@ -15,12 +15,13 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
                   access_token_secret=(API_ACCESS_TOKEN_SECRET),
                   sleep_on_rate_limit=True)
 
+DEFAULT_RETURNED_TWEETS = 100
 
-def twitter_search_tweets_by_headlines(headlines):
+def twitter_search_tweets_by_headlines(headlines, count=DEFAULT_RETURNED_TWEETS):
     results = {}
     for headline in headlines:
         results[headline] = api.GetSearch(
-            term=headline, count=100, return_json=True)
+            term=headline, count=count, return_json=True)
     return results
 
 def twitter_search_users_by_tweets(tweeted_headlines):

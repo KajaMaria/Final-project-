@@ -16,30 +16,28 @@ connection = psycopg2.connect(connection_string)
 print("Connected!")
 
 def test_connection():
-  create_news_site_entry(('DROP TABLE news_sites;','147852369','https://trymeagain.com'))
-  print(retrieve_list_of_news_sites())
-
+  pass
 
 def retrieve_list_of_news_sites():
   cursor.execute("SELECT related_account_name,related_account_id, url FROM news_sites;")
   entries = cursor.fetchall()
   return [{'screen_name':entry[0], 'id': entry[1], 'url': entry[2]} for entry in entries]
 
-def create_news_site_entry(entry):
-  SQL = "INSERT INTO news_sites (related_account_name, related_account_id, url) VALUES (%s, %s, %s);"
-  cursor.execute(SQL, entry)
+def create_news_site_entry(entries):
+  SQL = "INSERT INTO news_sites (related_account_name, related_account_id, url) VALUES (%s,%s,%s);"
+  for entry in entries:
+    cursor.execute(SQL, entry)
   connection.commit()
 
 try:
   cursor = connection.cursor()
-  test_connection()
+  #test_connection()
 except psycopg2.DatabaseError as e:
-  print('Failed to connect to Postgres db {}'.format(e))
-# finally:
-#   if connection:
-#     connection.commit()
-#     cursor.close()
-#     connection.close()
-
-
+  print('Failed to connect to Postgres db {}'.format(e));
+#finally:
+#  if connection:
+#    connection.commit()
+#    cursor.close()
+#    connection.close()
+#
 

@@ -27,9 +27,10 @@ def get_headlines(language=None, country=None):
   headlines = []
   
   for article in newsapi_results['articles']:
-    headlines.append(article['title'])
-  print(headlines)  
-  store_headlines(list(set(headlines)))
+    headlines.append(article['title']) 
+  headlines = (list(set(headlines)))
+  store_headlines(headlines)
+  return headlines
 
 
 def get_sources(language=None, country=None):

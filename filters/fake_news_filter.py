@@ -1,14 +1,16 @@
-from bs4 import BeautifulSoup
-from bs4 import SoupStrainer
+from bs4 import BeautifulSoup, SoupStrainer
 import requests
 import urllib.request
-import time
-from twitterapi import get_tweets_with_users
-from postgresql_storage import create_news_site_entry
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+from external_api.twitter_api import get_tweets_with_links
+from db.postgresql_storage import create_news_site_entry
+
 
 keywords = ["cookie", "copyright policy", "Data Policy", "Subscriber Agreement", "Your Ad Choices", "Site Feedback", "Advertising", "Careers",
             "Guidelines", "Terms of Use", "Privacy Policy", "Accessibility Help", "Parental Guidance", "Get Personalised Newsletters", "Risk Management Solutions"]
-# keywords = ["sample"]
+
 only_links = SoupStrainer("a")
 
 

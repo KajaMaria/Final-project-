@@ -21,7 +21,7 @@ dataset = [[3, 4, 5, 8, 11], [1, 2, 4, 3, 9], [
 new_object = [2, 1, 4, 8, 10]
 
 
-def k_nearest_n(data, predict, k=5):
+def euclidean_distance(data, predict, k=5):
     if len(data) >= k:
         warnings.warn('K is set to value smaller than deciding groups')
     distance = []
@@ -36,7 +36,8 @@ def k_nearest_n(data, predict, k=5):
 
         distance.append(single_vector_comparison)
 
-    print(distance)
+    return distance
+
     # single_vector_comparison.append((x - vector2))
 
     # print(single_vector_comparison)
@@ -63,4 +64,4 @@ def k_nearest_n(data, predict, k=5):
     # is it euclidean distance?
 
 
-k_nearest_n(dataset, new_object)
+euclidean_distance(dataset, new_object)

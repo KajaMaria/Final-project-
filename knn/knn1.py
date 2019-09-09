@@ -36,12 +36,13 @@ def k_nearest_n(data, predict, k=3):
     distance = []
     vector1 = data
     vector2 = predict
-    print(vector1, vector2)
     # range = len(data)
-    for x in range(0,5):
-        cat = (vector1[x] - vector2[x])
-        print(cat)
-    
+    single_vector_comparison = []
+    for x in range(0, 5):
+        single_vector_comparison.append(pow((vector1[x] - vector2[x]), 2))
+
+    distance.append(single_vector_comparison)
+
     #     e_distance = (vector1[i] - vector2)**2
     #     print(e_distance)
     #     # e_distance = (data[0]- predict[0])**2 + (features[1]- predict[1])**2+ (features[2]- predict[2])**2 + (features[3]- predict[3])**2 + (features[4]- predict[4])**2
@@ -61,5 +62,4 @@ def k_nearest_n(data, predict, k=3):
 # dinamic number of features?
 # how many neighbours so we have? more than 3?
 # is it euclidean distance?
-
 k_nearest_n(dataset, new_object, 5)

@@ -2,7 +2,7 @@ import math
 from math import sqrt
 import warnings
 from collections import Counter
-import numpy as np
+import operator
 
 # Intruction:
 # pip3 install numpy
@@ -21,47 +21,37 @@ dataset = [[3, 4, 5, 8, 11], [1, 2, 4, 3, 9], [
 new_object = [2, 1, 4, 8, 10]
 
 
-def euclidean_distance(data, predict, k=5):
-    if len(data) >= k:
-        warnings.warn('K is set to value smaller than deciding groups')
-    distance = []
-    vector2 = predict
+vector1 = [1, 2, 3, 4, 5]
+vector2 = [6, 7, 8, 9, 10]
 
-    for each_list in data:
-        single_vector_comparison = []
-        index = 0
-        for x in each_list:
-            single_vector_comparison.append((x - vector2[index]) ** 2)
-            index = index + 1
+def euclidean_distance(vector1, vector2):
+    vector_length = len(vector1) 
+    squared_distance = 0
+    for i in range(vector_length):
+        squared_distance += (vector1[i] - vector2[i])**2
 
-        distance.append(single_vector_comparison)
+    return squared_distance
 
-    return distance
+def k_nearest_n(distance, data2, k=5):
+    # if len(distance) >= k:
+    #     distance.warn('K is set to value smaller than deciding groups')
+    distance.sort(key=operator.itemgetter(1))
+    neighbors = []
+for x in range(k):
+   neighbors.append(distance[x][0])
+print(neighbors)
 
-    # single_vector_comparison.append((x - vector2))
+#     e_distance = (vector1[i] - vector2)**2
+#     print(e_distance)
+#     # e_distance = (data[0]- predict[0])**2 + (features[1]- predict[1])**2+ (features[2]- predict[2])**2 + (features[3]- predict[3])**2 + (features[4]- predict[4])**2
+#     # distances.append([e_distance, range])
 
-    # print(single_vector_comparison)
-    # distance.append(single_vector_comparison)
+# votes = [i][1] for i in sorted(distances)[:k]]
+# # print(Counter(votes).most_common(1))
+# vote_result= Counter(votes).most_common(1)[0][0]
+# print(vote_result)
 
-    # print(distance)
+# result= k_nearest_n(dataset, new_object2)
+# print(result)
 
-    #     e_distance = (vector1[i] - vector2)**2
-    #     print(e_distance)
-    #     # e_distance = (data[0]- predict[0])**2 + (features[1]- predict[1])**2+ (features[2]- predict[2])**2 + (features[3]- predict[3])**2 + (features[4]- predict[4])**2
-    #     # distances.append([e_distance, range])
-
-    # votes = [i][1] for i in sorted(distances)[:k]]
-    # # print(Counter(votes).most_common(1))
-    # vote_result= Counter(votes).most_common(1)[0][0]
-    # print(vote_result)
-
-    # result= k_nearest_n(dataset, new_object2)
-    # print(result)
-
-    # do we have two feature dinmention?
-    # dinamic number of features?
-    # how many neighbours so we have? more than 3?
-    # is it euclidean distance?
-
-
-euclidean_distance(dataset, new_object)
+euclidean_distance(vector1, vector2)

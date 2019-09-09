@@ -16,8 +16,7 @@ from collections import Counter
 # 2
 
 
-dataset = [[3, 4, 5, 8, 11], [1, 2, 4, 3, 9], [
-    4, 4, 7, 3, 4], [1, 4, 9, 8, 8], [7, 5, 3, 8, 9]]
+dataset = [3, 4, 5, 8, 11]
 new_object = [2, 1, 4, 8, 10]
 
 
@@ -34,15 +33,18 @@ new_object = [2, 1, 4, 8, 10]
 def k_nearest_n(data, predict, k=3):
     if len(data) >= k:
         warnings.warn('K is set to value smaller than deciding groups')
-    distances = []
-    vector1 = data[0]
-    print(vector1)
-    vector2 = data[1]
-    range = len(data[0])
-    # for i in range:
-    #     e_distance = (vector1 - vector2)**2
+    distance = []
+    vector1 = data
+    vector2 = predict
+    print(vector1, vector2)
+    # range = len(data)
+    for x in range(0,5):
+        cat = (vector1[x] - vector2[x])
+        print(cat)
+    
+    #     e_distance = (vector1[i] - vector2)**2
     #     print(e_distance)
-    #     # e_distance = (features[0]- predict[0])**2 + (features[1]- predict[1])**2+ (features[2]- predict[2])**2 + (features[3]- predict[3])**2 + (features[4]- predict[4])**2
+    #     # e_distance = (data[0]- predict[0])**2 + (features[1]- predict[1])**2+ (features[2]- predict[2])**2 + (features[3]- predict[3])**2 + (features[4]- predict[4])**2
     #     # distances.append([e_distance, range])
 
     # votes = [i][1] for i in sorted(distances)[:k]]

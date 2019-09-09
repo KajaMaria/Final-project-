@@ -1,4 +1,4 @@
-from twitterapi import get_tweets_for_user
+from external_api.twitterapi import get_tweets_for_user
 
 
 def timeline_characteristics():

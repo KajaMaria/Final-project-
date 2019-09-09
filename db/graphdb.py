@@ -1,14 +1,16 @@
 from neo4j import GraphDatabase
-# from twitterapi import run_twitter_query
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 import credentials
-# import json
-from redis_cache import retrieve_users
 
-username = os.environ.get('GRAPHENEDB_BOLT_USER')
-password = os.environ.get('GRAPHENEDB_BOLT_PASSWORD')
-url = os.environ.get('GRAPHENEDB_BOLT_URL')
 
-driver = GraphDatabase.driver(url, auth=(username, password)
+GRAPHENEDB_BOLT_USER = os.environ.get('GRAPHENEDB_BOLT_USER')
+GRAPHENEDB_BOLT_PASSWORD = os.environ.get('GRAPHENEDB_BOLT_PASSWORD')
+GRAPHENEDB_BOLT_URL = os.environ.get('GRAPHENEDB_BOLT_URL') 
+
+driver = GraphDatabase.driver(
+  GRAPHENEDB_BOLT_URL,auth=(GRAPHENEDB_BOLT_USER ,GRAPHENEDB_BOLT_PASSWORD))
 
 session=driver.session()
 

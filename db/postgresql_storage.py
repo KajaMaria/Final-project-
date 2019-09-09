@@ -1,6 +1,9 @@
 import psycopg2
-import credentials
 import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+import credentials
+
 
 PGHOST=os.environ.get('PGHOST')
 PGDATABASE=os.environ.get('PGDATABASE')
@@ -11,6 +14,10 @@ connection_string = "host="+ PGHOST +" port="+ "5432" +" dbname="+ PGDATABASE +"
     +" password="+ PGPASSWORD
 connection = psycopg2.connect(connection_string)
 print("Connected!")
+
+def test_connection():
+  create_news_site_entry(('DROP TABLE news_sites;','147852369','https://trymeagain.com'))
+  print(retrieve_list_of_news_sites())
 
 
 def retrieve_list_of_news_sites():
@@ -25,6 +32,7 @@ def create_news_site_entry(entry):
 
 try:
   cursor = connection.cursor()
+  test_connection()
 except psycopg2.DatabaseError as e:
   print('Failed to connect to Postgres db {}'.format(e))
 # finally:
@@ -32,11 +40,6 @@ except psycopg2.DatabaseError as e:
 #     connection.commit()
 #     cursor.close()
 #     connection.close()
-
-def test_connection():
-  create_news_site_entry(('DROP TABLE news_sites;','147852369','https://tryme.com'))
-  retrieve_list_of_news_sites()
-
 
 
 

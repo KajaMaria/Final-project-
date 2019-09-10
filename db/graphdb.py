@@ -20,19 +20,28 @@ def add_user_node(tx, name):
            #    "MERGE (a)-[:RETWEETED]->(h)",
            name=name)
 
+def add_text_node(tx, args):
+    pass
 
-def print_nodes(tx):
-    for record in tx.run("MATCH (n) RETURN n"):
+def add_hashtag_node(tx, args):
+    pass
+
+def add_relationship_node(tx, args):
+    pass
+
+def retrieve_data(tx, query_param, return_param):
+    for record in tx.run("MATCH ({}) RETURN {}".format(query_param, return_param)):
         print(record)
 
-def create_node(data):
-  for element in data:
+def store_data(tx, function_name, data):
     function={
       'user': add_user_node,
-      'headline': add_headline_node,
+      'text': add_text_node,
+      'hashtag' : add_hashtag_node,
       'relationship': add_relationship_node
     }
-    session.write_transaction(element['type'], element['data'])
+    function[function_name](data)
+    # session.write_transaction(element['type'], element['data'])
 
 
       # with driver.session() as session:

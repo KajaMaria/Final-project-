@@ -7,7 +7,7 @@ import HeaderTab from './components/Header';
 import NavigationBar from './components/Navigation';
 import FooterBar from './components/Footer';
 import Layout from './components/Layout';
-
+import LoadingBar from './components/Loading';
 import { Container, Col, Row } from 'react-bootstrap';
 
 class App extends Component {
@@ -18,15 +18,15 @@ class App extends Component {
     mainContent: 0,
   }
 
-  // const display = {
-  //   if (this.state.mainContent == 0) {
-  //     display = <PleaseChooseanOption />;
-  //   } else if (this.state.mainContent == 1 ) {
-  //     display = <ShowGraph />;
-  //   } else {
-  //     display = <Loading />;
-  //   }
-  // }
+  
+    if (this.state.mainContent == 0) {
+      let display = <PleaseChooseanOption />;
+    } else if (this.state.mainContent == 1 ) {
+      let display = <Neo />;
+    } else {
+      let display = <Loading />;
+    }
+  
 
     return (
       
@@ -51,6 +51,7 @@ class App extends Component {
         <Col>
           <Layout />
 
+          <LoadingBar />
         
           </Col>
         </Row>

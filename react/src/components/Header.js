@@ -1,19 +1,34 @@
 import React from 'react'
-import { Layout, Footer, Textfield, FooterSection, FooterLinkList, Header, Navigation, Drawer, Content } from 'react-mdl';
+import { Component } from 'react';
+import { Card, Button } from 'react-bootstrap';
+import styled from 'styled-components';
+
+
 
 class HeaderTab extends Component {
     render() {
         return (
             <div>
-                <Header transparent title="Botter" style={{ color: 'white' }}>
-                    <Textfield
-                        value=""
-                        onChange={() => { }}
-                        label="Search"
-                        expandable
-                        expandableIcon="search"
-                    />
-                </Header>
+              <Card className="text-center">
+                <Card.Header>Neo4j</Card.Header>
+                <Card.Body>
+                    <Card.Title>Graph Database</Card.Title>
+                    <Card.Text>
+                            Check how your users are interatcing with bots
+                    </Card.Text>
+                    <Button variant="primary">Go somewhere</Button>
+                </Card.Body>
+                <Card.Footer className="text-muted">2 days ago</Card.Footer>
+                </Card>
+                <br />
+                <Card>
+                <Card.Img variant="top" src="pic1.jpg" />
+                <Card.Body>
+                <Card.Text>
+                    You can put neo4j here
+                </Card.Text>
+                </Card.Body>
+            </Card>
             </div>
         )
     }

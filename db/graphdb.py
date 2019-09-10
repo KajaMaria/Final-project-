@@ -1,53 +1,64 @@
+import credentials
 from neo4j import GraphDatabase
 import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
-import credentials
 
 
 GRAPHENEDB_BOLT_USER = os.environ.get('GRAPHENEDB_BOLT_USER')
 GRAPHENEDB_BOLT_PASSWORD = os.environ.get('GRAPHENEDB_BOLT_PASSWORD')
-GRAPHENEDB_BOLT_URL = os.environ.get('GRAPHENEDB_BOLT_URL') 
+GRAPHENEDB_BOLT_URL = os.environ.get('GRAPHENEDB_BOLT_URL')
 
 driver = GraphDatabase.driver(
-  GRAPHENEDB_BOLT_URL,auth=(GRAPHENEDB_BOLT_USER ,GRAPHENEDB_BOLT_PASSWORD))
+    GRAPHENEDB_BOLT_URL, auth=(GRAPHENEDB_BOLT_USER, GRAPHENEDB_BOLT_PASSWORD))
 
-session=driver.session()
+session = driver.session()
 
-def add_user_node(tx, name):
-    tx.run("MERGE (a:User {name: $name}) ",
-           #    "MERGE (h:Headline {headline: $headline}) "
-           #    "MERGE (a)-[:RETWEETED]->(h)",
-           name=name)
 
-def add_text_node(tx, args):
-    pass
+def add_user_node(tx, user, source):
+    tx.run("MERGE (b:Bot {screen_name: $user.screen_name, id: $user.id, age: $user.created_at, score: $user.score, average_tweets: $user.average_tweets, followers: $user.followers, total_tweets: $user.total_tweets, status: $user.status}) "
+           "MERGE (s:Source {source: $source.source, content: $source.content}) "
+           "MERGE (b)-[:TWEETED {created_at: $text_string.created_date}]->(t) ",
+           user=user, source=source)
+    # tx.run("MERGE (a:User {name: $name}) ",
+    #        #    "MERGE (h:Headline {headline: $headline}) "
+    #        #    "MERGE (a)-[:RETWEETED]->(h)",
+    #        name=name)
 
-def add_hashtag_node(tx, args):
-    pass
+
+def add_text_node(tx, source):
+    tx.run("MERGE (s:Source {source: $source.source, content: $source.content}) ",
+           source=source)
+
+
+def add_hashtag_node(tx, source):
+    tx.run("MERGE (s:Source {source: $source.source, content: $source.content}) ",
+           source=source)
+
 
 def add_relationship_node(tx, args):
     pass
 
+
 def retrieve_data(tx, query_param, return_param):
-    for record in tx.run("MATCH ({}) RETURN {}".format(query_param, return_param)):
+    for record in tx.run("MATCH (n {$query_param}) RETURN n", query_param=query_param):
         print(record)
 
+
 def store_data(tx, function_name, data):
-    function={
-      'user': add_user_node,
-      'text': add_text_node,
-      'hashtag' : add_hashtag_node,
-      'relationship': add_relationship_node
+    function = {
+        'user': add_user_node,
+        'text': add_text_node,
+        'hashtag': add_hashtag_node,
+        'relationship': add_relationship_node
     }
     function[function_name](data)
     # session.write_transaction(element['type'], element['data'])
 
-
-      # with driver.session() as session:
-      #    users = retrieve_users()
-      #    print(users)
-      #    for user in users:
-      #        print(user)
-      #        session.write_transaction(add_node_user, user['screen_name'])
-      #    session.read_transaction(print_nodes)
+    # with driver.session() as session:
+    #    users = retrieve_users()
+    #    print(users)
+    #    for user in users:
+    #        print(user)
+    #        session.write_transaction(add_node_user, user['screen_name'])
+    #    session.read_transaction(print_nodes)

@@ -14,8 +14,33 @@ class HeaderTab extends Component {
                 <Card.Body>
                     <Card.Title>Graph Database</Card.Title>
                     <Card.Text>
-                            Check how your users are interatcing with bots
-                    </Card.Text>
+                    
+
+                        <div>
+                        <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Choose Filter : 
+                            <input type="text" name="name" onChange={this.handleChange} />
+                        </label>
+                        <button type="submit">Add</button>
+                        </form>
+
+                        </div>
+                        <div>
+
+                        <div>
+                    <form onSubmit={this.handleSubmit}>
+                    <label>
+                       Delete Filter:
+                        <input type="text" name="id" onChange={this.handleChange} />
+                    </label>
+                    <button type="submit">Delete</button>
+                    </form>
+                    </div>
+
+                        </div>
+                    
+                 </Card.Text>
                     <Button variant="primary">Go somewhere</Button>
                 </Card.Body>
                 <Card.Footer className="text-muted">2 days ago</Card.Footer>

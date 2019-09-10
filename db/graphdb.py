@@ -40,9 +40,9 @@ def add_relationship_node(tx, args):
     pass
 
 
-def retrieve_data(tx, query_param, return_param):
-    for record in tx.run("MATCH (n {$query_param}) RETURN n", query_param=query_param):
-        print(record)
+def retrieve_data(tx, query_param):
+    for record in tx.run("MATCH (n{$query_param}) RETURN n", query_param=query_param):
+        return record
 
 
 def store_data(tx, function_name, data):

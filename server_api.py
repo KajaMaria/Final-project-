@@ -1,3 +1,4 @@
+from db.graphdb import retrieve_data, session
 # Write basic server to serve the API
 
 #--------------------------
@@ -6,7 +7,8 @@
 
 ### Front End
 
-def get_graph(graph_model_name): 
+def get_graph(graph_model_name):
+    
   # Get the graph to show on page. 
   # The model_name is the model of the graph we're showing: linked bots, dead bots etc. 
   pass

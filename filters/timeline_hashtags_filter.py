@@ -1,4 +1,7 @@
-from twitterapi import get_tweets_for_user
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+from external_api.twitter_api import get_tweets_for_user
 
 COUNT = 200
 TWEETED_TAGS_THREASHOLD = 3
@@ -25,4 +28,4 @@ def get_timeline_hashtags_stats(user_id, count=None):
 def timeline_hashtags_filter(user_id, count=None):
   return get_timeline_hashtags_stats(user_id, count)['ratio']
 
-#print(timeline_hashtags_filter(102479353))
+print(timeline_hashtags_filter(102479353))

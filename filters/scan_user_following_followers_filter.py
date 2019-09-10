@@ -1,7 +1,10 @@
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 #from users_filter import run_filters, SUSPECTED_BOT_SCORE
-from twitterapi import get_user_following_list, get_user_followers_list, get_user
-from graphdb import create_node
-from redis_cache import retrieve_users
+from external_api.twitter_api import get_user_following_list, get_user_followers_list, get_user
+from db.graphdb import create_node
+from db.redis_cache import retrieve_users
 
 # TODO: due to missing implementaions inspect_user_following)followers was not testes
 
@@ -28,6 +31,11 @@ def get_user_following_followers_ids(user_id):
 #      create_node({'type': 'user', 'data': {'screen_name': follower['screen_name'], 'id': follower_id}})
 #      create_node({'type': 'relationship', 'data':{'type':'FOLLOWING', 'direction': [follower_id, user_id], 'user': user, 'follower': follower}})
 #
+def bot_following_ratio_filter():
+  pass
+
+def bot_followers_ratio_filter():
+  pass
 
 def test_filter():
   users = retrieve_users()

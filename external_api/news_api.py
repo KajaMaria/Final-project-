@@ -1,8 +1,9 @@
 from newsapi.newsapi_client import NewsApiClient
 import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+from db.redis_cache import store_headlines, retrieve_headlines
 import credentials
-from redis_cache import store_headlines, retrieve_headlines
-
 
 API_KEY = os.environ.get('NEWS_KEY')
 
@@ -26,9 +27,10 @@ def get_headlines(language=None, country=None):
   headlines = []
   
   for article in newsapi_results['articles']:
-    headlines.append(article['title'])
-  
-  store_headlines(list(set(headlines)))
+    headlines.append(article['title']) 
+  headlines = (list(set(headlines)))
+  store_headlines(headlines)
+  return headlines
 
 
 def get_sources(language=None, country=None):

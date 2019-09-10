@@ -1,7 +1,7 @@
 import os
- 
+
 os.environ['CONSUMER_KEY'] = ''
-os.environ['CONSUMER_SECRET'] = ''
+os.environ['CONSUMER_SECRET'] = ''  
 os.environ['ACCESS_TOKEN_KEY'] = ''
 os.environ['ACCESS_TOKEN_SECRET'] = ''
 os.environ['NEWS_KEY'] = ''
@@ -12,4 +12,5 @@ os.environ['PGHOST'] = ''
 os.environ['PGDATABASE'] = ''
 os.environ['PGPASSWORD'] = ''
 os.environ['PGUSER'] = ''
+
 

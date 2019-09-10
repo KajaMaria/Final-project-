@@ -1,6 +1,9 @@
 import psycopg2
-import credentials
 import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+import credentials
+
 
 PGHOST=os.environ.get('PGHOST')
 PGDATABASE=os.environ.get('PGDATABASE')
@@ -12,31 +15,30 @@ connection_string = "host="+ PGHOST +" port="+ "5432" +" dbname="+ PGDATABASE +"
 connection = psycopg2.connect(connection_string)
 print("Connected!")
 
+def test_connection():
+  pass
 
 def retrieve_list_of_news_sites():
   cursor.execute("SELECT related_account_name,related_account_id, url FROM news_sites;")
   entries = cursor.fetchall()
   return [{'screen_name':entry[0], 'id': entry[1], 'url': entry[2]} for entry in entries]
 
-def create_news_site_entry(entry):
-  SQL = "INSERT INTO news_sites (related_account_name, related_account_id, url) VALUES (%s, %s, %s);"
-  cursor.execute(SQL, entry)
+def create_news_site_entry(entries):
+  SQL = "INSERT INTO news_sites (related_account_name, related_account_id, url) VALUES (%s,%s,%s);"
+  for entry in entries:
+    print(entry)
+    cursor.execute(SQL, entry)
   connection.commit()
 
 try:
   cursor = connection.cursor()
+  #test_connection()
 except psycopg2.DatabaseError as e:
   print('Failed to connect to Postgres db {}'.format(e));
-finally:
-  if connection:
-    connection.commit()
-    cursor.close()
-    connection.close()
-
-def test_connection():
-  create_news_site_entry(('DROP TABLE news_sites;','147852369','https://tryme.com'))
-  retrieve_list_of_news_sites()
-
-
-
+#finally:
+#  if connection:
+#    connection.commit()
+#    cursor.close()
+#    connection.close()
+#
 

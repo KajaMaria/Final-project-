@@ -1,7 +1,10 @@
 import datetime
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 from utility import convert_timestamp_to_datetime
-from twitterapi import get_tweets_for_user 
-from redis_cache import retrieve_users
+from external_api.twitter_api import get_tweets_for_user 
+#from db.redis_cache import retrieve_users
 
 QUERY_TWEETS_COUNT_PER_USER = 20
 
@@ -48,3 +51,4 @@ def active_hours_per_day_filter(users,start_date,end_date):
 #  users = retrieve_users()
 #  print(active_hours_per_day_filter(users,0,0))
 
+#test_filter()

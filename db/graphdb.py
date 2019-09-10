@@ -1,18 +1,18 @@
 from neo4j import GraphDatabase
-# from bs4 import BeautifulSoup
-#import requests
-#import urllib.request
-#import time
-#from twitterapi import run_twitter_query
-#import news
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 import credentials
-#import json
-from redis_cache import retrieve_users
+
+
+GRAPHENEDB_BOLT_USER = os.environ.get('GRAPHENEDB_BOLT_USER')
+GRAPHENEDB_BOLT_PASSWORD = os.environ.get('GRAPHENEDB_BOLT_PASSWORD')
+GRAPHENEDB_BOLT_URL = os.environ.get('GRAPHENEDB_BOLT_URL') 
 
 driver = GraphDatabase.driver(
-    "bolt://localhost:7687", auth=("neo4j", "neo5j")#"dansbugs"))
+  GRAPHENEDB_BOLT_URL,auth=(GRAPHENEDB_BOLT_USER ,GRAPHENEDB_BOLT_PASSWORD))
 
-session = driver.session()
+session=driver.session()
 
 def add_user_node(tx, name):
     tx.run("MERGE (a:User {name: $name}) ",
@@ -27,15 +27,15 @@ def print_nodes(tx):
 
 def create_node(data):
   for element in data:
-    function = {
+    function={
       'user': add_user_node,
       'headline': add_headline_node,
       'relationship': add_relationship_node
     }
-    session.write_transaction(element['type'],element['data'])
+    session.write_transaction(element['type'], element['data'])
 
-  
-      #with driver.session() as session:
+
+      # with driver.session() as session:
       #    users = retrieve_users()
       #    print(users)
       #    for user in users:

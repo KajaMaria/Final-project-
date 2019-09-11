@@ -25,7 +25,7 @@ def twitter_search_tweets_by_headlines(headlines, count=DEFAULT_RETURNED_TWEETS)
     results = {}
     for headline in headlines:
         results[headline] = api.GetSearch(
-            term=headline, count=count, return_json=True)
+            term=headline['title'], count=count, return_json=True)
     return results
 
 

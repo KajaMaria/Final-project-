@@ -22,11 +22,17 @@ def add_user_node(tx, user, source):
     #     #    "MERGE (s:Source {source: $source.source, content: $source.content}) "
     #        "MERGE (b)-[:TWEETED {created_at: $text_string.created_date}]->(t) ",
     #        user=user)
-    text_source = "MERGE (s:Source { text: $source }) "
+    # if source['type'] == 'text':
+    #     text_source = "MERGE (s:Source { text: $source['text'] }) "
+    # else if source['type'] == 'hashtag':
+    #     text_source = "MERGE (s:Source { text: $source['text'], trending: $source['trending']  }) "
+    # else:
+    #     text_source = "MERGE (s:Source { text: $source['text'], publisher: $source['publisher'], published_at: $source['published_at'] }) "
+    text_source = "MERGE (s:Source { text: $source['text'] }) "
     tx.run("MERGE (a:User {screen_name: $user['screen_name'], id: $user['id'], created_at: $user['created_at'], followers_count: $user['followers_count'], statuses_count: $user['statuses_count']})"#, score: $user['score'], average_tweets: $user['average_tweets'] status: $user['status']}) ",
            f"{text_source}"
            "MERGE (a)-[:TWEETED]->(s)",
-           user=user, source=source)
+           user=user)#, source=source)
 
 
 def add_text_node(tx, source):
@@ -134,7 +140,7 @@ tweeted_headlines = twitter_search_tweets_by_headlines(headlines)
 users = twitter_search_users_by_headlines(tweeted_headlines)
 # print(users[0])
 for user in users:
-    session.write_transaction(add_user_node, user[0], user[1])
+    session.write_transaction(add_user_node, user)
 
 
 # print(session.read_transaction(print_nodes))

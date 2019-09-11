@@ -25,4 +25,4 @@ def create_test_set(size=DEFAULT_SET_SIZE):
     mock_data.append((vector, randint(0,1)))
   create_classified_set_entry(mock_data)
 
-create_test_set()
+#create_test_set()

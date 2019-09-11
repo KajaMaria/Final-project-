@@ -12,9 +12,7 @@ from db.postgresql_storage import get_classified_set
 #  return retrieve_mock_data_set()    
 
 def get_classified_set_from_db(): #From Postgres
-  s = get_classified_set()
-  print(s)
-  return s
+  return get_classified_set()
 
 def euclidean_distance(instance1, instance2, length):
 	distance = 0
@@ -29,7 +27,6 @@ def get_nearest_neighbours(classified_set, test_instance, k):
     dist = euclidean_distance(test_instance, classified_set[x][0], length)
     distances.append((classified_set[x], dist))
   distances.sort(key=operator.itemgetter(1))
-  print(distances[:k])
   return distances[:k]
 
 def get_classification(nearest_neighbours, k):
@@ -40,14 +37,15 @@ def knn_classifier(training_set,test_instance,k):
   nearest_neighbours = get_nearest_neighbours(training_set, test_instance,k)
   return get_classification(nearest_neighbours, k)
 
-def classify_data_set(training_set, data_set, k):
-  classified_data_set = []
-  for element in data_set:
-    classification = knn_classifier(training_set,element,k)
-    classified_data_set.append((element,classification))
-  return classified_data_set
+def classify_data_set(training_set_id, tested_set, k):
+  classified_set = get_classified_set_from_db()
+  data_set = []
+  for element in tested_set:
+    classification = knn_classifier(classified_set,element,k)
+    data_set.append((element,classification))
+  return data_set
 
 
 #print(classify_data_set(get_classified_set_from_redis(),[[0.917009396, 1, 1, 0.6670261935, 1, 1]],3))
-print(classify_data_set(get_classified_set_from_db(),[[0.917009396, 1, 1, 0.6670261935, 1, 1]],3))
+#print(classify_data_set(1,[[0.917009396, 1, 1, 0.6670261935, 1, 1]],3))
 

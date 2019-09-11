@@ -22,7 +22,6 @@ def test_connection():
 def get_classified_set():
   cursor.execute("SELECT classified_samples FROM data_set;")
   entries = cursor.fetchall()
-  #print(entries[0][0])
   samples = []
   for entry in entries:
     ds = json.loads(entry[0])
@@ -31,7 +30,6 @@ def get_classified_set():
   return samples
 
 def create_classified_set_entry(entry):
-  #  print(json.dumps(entry))
   SQL = "INSERT INTO data_set (classified_samples) VALUES (%s);"
   cursor.execute(SQL, (json.dumps(entry),))
   connection.commit()

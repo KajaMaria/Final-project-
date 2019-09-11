@@ -40,10 +40,15 @@ def add_relationship_node(tx, args):
     pass
 
 
-def retrieve_data(tx, query_param):
-    for record in tx.run("MATCH (n{$query_param}) RETURN n", query_param=query_param):
+def retrieve_all_data(tx):
+    statement = "MATCH (n) RETURN n "
+    for record in tx.run(statement):
         return record
 
+def retrieve_user(tx, user_id):
+    statement = "MATCH (a:User { id: {user_id} }) RETURN a"
+    for record in tx.run(statement, user_id=user_id):
+        return record
 
 def store_data(tx, function_name, data):
     function = {
@@ -62,3 +67,4 @@ def store_data(tx, function_name, data):
     #        print(user)
     #        session.write_transaction(add_node_user, user['screen_name'])
     #    session.read_transaction(print_nodes)
+

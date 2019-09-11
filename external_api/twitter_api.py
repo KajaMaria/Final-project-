@@ -1,5 +1,7 @@
 import os
 import twitter
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 import credentials
 
 # Init
@@ -65,4 +67,5 @@ def get_tweets_with_users(headlines):
   tweeted_headlines = twitter_search_tweets_by_headlines(headlines)
   users = twitter_search_users_by_tweets(tweeted_headlines)
   return users
+
 

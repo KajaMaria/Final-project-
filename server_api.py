@@ -1,4 +1,4 @@
-from db.graphdb import retrieve_user, session, retrieve_text_source
+from db.graphdb import retrieve_user, session, retrieve_text_source, retrieve_hashtag
 # Write basic server to serve the API
 
 # --------------------------
@@ -9,10 +9,7 @@ from db.graphdb import retrieve_user, session, retrieve_text_source
 
 
 def get_graph(graph_model_name):
-    # for tx in session:
-    #     results = retrieve_data(tx, query_param="")
-    # print(results)
-    # return results
+    
     # Get the graph to show on page.
     # The model_name is the model of the graph we're showing: linked bots, dead bots etc.
     pass
@@ -77,19 +74,21 @@ def get_user_node(user_id):
     # - number of followers
     # - total number of tweets
     # - status (i.e active/inactive)
+
+
 def get_text_node(text):
     data = retrieve_text_source(tx=session, text=text)
     text_node = {
-      "text": data.properties['text'],
-      "source": data.properties['source'],
+        "text": data.properties['text'],
+        "source": data.properties['source'],
     }
     if text_node['source'] != "User entered":
-          append_data = {
+        append_data = {
             "News Outlet": data.properties['news_source'],
             "Headline Published": data.properties['created'],
             "Story URL": data.properties['url'],
-          }
-          text_node.update(append_data)
+        }
+        text_node.update(append_data)
     return text_node
     # details to include for text node:
     # - text (string queried)
@@ -97,11 +96,17 @@ def get_text_node(text):
     # should have a t/false for headline property so that if it is a
     # headline we can provide the original source link, may need to
     # re-write the headlines storage to do so.
-    
 
-    
-    
-    # details to include for hashtage node:
+
+def get_hashtag_node(hashtag):
+    data = retrieve_hashtag(tx=session, hashtag=hashtag)
+    hashtag_node = {
+        "text": data.properties['text'],
+        "trending": data.properties['trending'],
+        "created": data.properties['created_at']
+    }
+    return hashtag_node
+    # details to include for hashtag node:
     # - text (hashtag)
     # - trending (true/false)
     # details for relationships:
@@ -146,6 +151,3 @@ def use_different_classifier():
     # Enable devs to use their own classifier on the data
     # For us it just means to call on a different method
     pass
-
-
-

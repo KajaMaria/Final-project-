@@ -30,15 +30,12 @@ def add_text_node(tx, source):
     tx.run("MERGE (s:Source {source: $source.source, content: $source.content}) ",
            source=source)
 
-
 def add_hashtag_node(tx, source):
     tx.run("MERGE (s:Source {source: $source.source, content: $source.content}) ",
            source=source)
 
-
 def add_relationship_node(tx, args):
     pass
-
 
 def retrieve_all_data(tx):
     statement = "MATCH (n) RETURN n "
@@ -55,6 +52,11 @@ def retrieve_text_source(tx, text):
     for record in tx.run(statement, text=text):
         return record
         
+def retrieve_hashtag(tx, hashtag):
+    statement = "MATCH (a:Hashtag { text: {text} }) RETURN a"
+    for record in tx.run(statement, text=hashtag):
+        return record
+
 def store_data(tx, function_name, data):
     function = {
         'user': add_user_node,

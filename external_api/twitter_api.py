@@ -25,22 +25,21 @@ def twitter_search_tweets_by_headlines(headlines, count=DEFAULT_RETURNED_TWEETS)
     return results
 
 def twitter_search_users_by_tweets(tweeted_headlines):
-    users_by_headline = []
+  users_by_headline = []
 
-    for headline, results in tweeted_headlines.items():
-        user = {}
-        for tweet in results['statuses']:
-            user.update({'screen_name': tweet['user']['screen_name'],
+  for headline, results in tweeted_headlines.items():
+    for tweet in results['statuses']:
+      user = {'screen_name': tweet['user']['screen_name'],
                          'id': tweet['user']['id'],
                          'urls': tweet['entities']['urls'],
                          'verified': tweet['user']['verified'],
                          'protected': tweet['user']['protected'],
                          'created_at': tweet['user']['created_at'],
                          'statuses_count': tweet['user']['statuses_count'],
-                         'description': tweet['user']['description']})
-        if len(user.keys()) > 0:
-            users_by_headline.append(user)
-    return users_by_headline
+                         'description': tweet['user']['description']}
+      if len(user.keys()) > 0:
+        users_by_headline.append(user)
+  return users_by_headline
 
 
 def run_twitter_query(headlines):

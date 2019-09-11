@@ -24,14 +24,12 @@ def get_headlines(language=None, country=None):
   language = language or LANGUAGE
   sources, domains = set_sources_and_domains_for_newsapi(language, country or COUNTRY)
   newsapi_results = get_articles_from_newsapi(sources,domains,language)
-  
   headlines = []
   
   for article in newsapi_results['articles']:
-    headlines.append({'title': article['title'], 'published_at': article['publishedAt'], 'publisher': article['source']['name']}) 
+    headlines.append({'title': article['title'], 'published_at': article['publishedAt'], 'publisher': article['source']['name'], 'url': article['url']}) 
   
   unique_headlines = uniquify_headlines(headlines)
-  print(unique_headlines)
   return unique_headlines
   # headlines_set = [] 
   

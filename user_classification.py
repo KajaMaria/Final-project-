@@ -27,7 +27,7 @@ def run_filters_on_user(filters,user):
   f_tuples = [(f,filter_function[f]) for f in filters]
   f_tuples.sort(key= lambda t: t[1][1])
   results = []
-  unique_filter_identifiers = [3,5,7,11,13,17,19]
+  unique_filter_identifiers = [2,3,5,7,11,13,17,19]
   training_set_identifier = 1
   for f_tuple in f_tuples:
     filter_score = f_tuple[1][0](user)
@@ -57,7 +57,7 @@ def classify_user(user, filters):
     return None
     
   filters_results, training_set_identifier = run_filters_on_user(filters,user)
-  classification = run_knn_classifier(filters_results,training_set_identifier)
+  classification = run_knn_classifier(filters_results,str(training_set_identifier))
   return classification
 
 user = get_user(998852942223507457)

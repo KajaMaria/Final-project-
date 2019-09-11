@@ -19,10 +19,12 @@ print("Connected!")
 def test_connection():
   pass
 
-def get_classified_set():
-  cursor.execute("SELECT classified_samples FROM data_set;")
+def get_classified_set(set_id):
+  print('get_classified_set: {}'.format(set_id))
+  SQL = "SELECT classified_samples FROM data_set WHERE set_id=(%s);"
+  cursor.execute(SQL,(set_id,))
   entries = cursor.fetchall()
-  #print(entries[0][0])
+  print(entries)
   samples = []
   for entry in entries:
     ds = json.loads(entry[0])
@@ -30,10 +32,9 @@ def get_classified_set():
       samples.append((sample[0],sample[1]))
   return samples
 
-def create_classified_set_entry(entry):
-  #  print(json.dumps(entry))
-  SQL = "INSERT INTO data_set (classified_samples) VALUES (%s);"
-  cursor.execute(SQL, (json.dumps(entry),))
+def create_classified_set_entry(samples,set_id):
+  SQL = "INSERT INTO data_set (set_id, classified_samples) VALUES (%s, %s);"
+  cursor.execute(SQL, (set_id, json.dumps(samples),))
   connection.commit()
 
 def retrieve_list_of_news_sites():

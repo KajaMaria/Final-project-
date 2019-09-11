@@ -50,6 +50,11 @@ def retrieve_user(tx, user_id):
     for record in tx.run(statement, user_id=user_id):
         return record
 
+def retrieve_text_source(tx, text):
+    statement = "MATCH (a:Text { text: {text} }) RETURN a"
+    for record in tx.run(statement, text=text):
+        return record
+        
 def store_data(tx, function_name, data):
     function = {
         'user': add_user_node,

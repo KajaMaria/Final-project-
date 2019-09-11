@@ -1,4 +1,4 @@
-from db.graphdb import retrieve_user, session
+from db.graphdb import retrieve_user, session, retrieve_text_source
 # Write basic server to serve the API
 
 # --------------------------
@@ -54,7 +54,7 @@ def get_suspicious_news_sites_list():
 def get_user_node(user_id):
   # need to retrieve a specific user's details to be displayed, watch for a get
   # request passing only a user id to retrieve that users data.
-    data = retrieve_user(session, user_id)
+    data = retrieve_user(tx=session, user_id=user_id)
     user = {
         "name": data.properties['name'],
         "id": data.properties['id'],
@@ -77,9 +77,30 @@ def get_user_node(user_id):
     # - number of followers
     # - total number of tweets
     # - status (i.e active/inactive)
+def get_text_node(text):
+    data = retrieve_text_source(tx=session, text=text)
+    text_node = {
+      "text": data.properties['text'],
+      "source": data.properties['source'],
+    }
+    if text_node['source'] != "User entered":
+          append_data = {
+            "News Outlet": data.properties['news_source'],
+            "Headline Published": data.properties['created'],
+            "Story URL": data.properties['url'],
+          }
+          text_node.update(append_data)
+    return text_node
     # details to include for text node:
     # - text (string queried)
     # - origin of search (i.e freetext/headline)
+    # should have a t/false for headline property so that if it is a
+    # headline we can provide the original source link, may need to
+    # re-write the headlines storage to do so.
+    
+
+    
+    
     # details to include for hashtage node:
     # - text (hashtag)
     # - trending (true/false)

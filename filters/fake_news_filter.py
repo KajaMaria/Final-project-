@@ -16,7 +16,7 @@ only_links = SoupStrainer("a")
 
 def find_links(user):
     links = []
-    if not user['urls']:
+    if 'urls' not in user:
         return None
     else:
         url = user['urls'][0]['expanded_url']
@@ -49,6 +49,7 @@ def get_suspicious_sites(keywords, site, user):
         entry = [[user['screen_name'], user['id'], site['url']]]
         create_news_site_entry(entry)
         return site
+    return None
 
 
 def get_sites_with_user_mentioned(site, user):
@@ -60,22 +61,26 @@ def get_sites_with_user_mentioned(site, user):
             entry = [[user['screen_name'], user['id'], site['url']]]
             create_news_site_entry(entry)
             return {'screen_name': screen_name, 'url': site['url']}
+    return None
 
 
 def filter_by_site_links(user):
     site = find_links(user)
-    if get_sites_with_user_mentioned(site=site, user=user) != None:
+    if site and get_sites_with_user_mentioned(site=site, user=user) != None:
         print('user failed first filter')
         return True
     else:
-        if get_suspicious_sites(keywords=keywords, site=site, user=user) != None:
+        if site and get_suspicious_sites(keywords=keywords, site=site, user=user) != None:
             print('user failed at second filter')
             return True
         else:
             return False
 
-headlines = retrieve_headlines()
-users = get_tweets_with_users(headlines)
+def test_filter():
+  headlines = retrieve_headlines()
+  users = get_tweets_with_users(headlines)
 
-for user in users:
+  for user in users:
     filter_by_site_links(user)
+
+#test_filter()

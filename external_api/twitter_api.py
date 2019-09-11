@@ -61,7 +61,7 @@ def get_user_followers_list(user_id):
   return api.GetFriendIDs(user_id=user_id)
 
 def get_user(user_id):
-  return api.GetUser(user_id=user_id)
+  return api.GetUser(user_id=user_id,return_json=True)
 
 def get_tweets_with_users(headlines): 
   tweeted_headlines = twitter_search_tweets_by_headlines(headlines)

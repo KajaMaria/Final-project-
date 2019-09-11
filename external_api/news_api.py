@@ -30,6 +30,7 @@ def get_headlines(language=None, country=None):
     headlines.append({'title': article['title'], 'published_at': article['publishedAt'], 'publisher': article['source']['name'], 'url': article['url']}) 
   
   unique_headlines = uniquify_headlines(headlines)
+  store_headlines(unique_headlines)
   return unique_headlines
   # headlines_set = [] 
   

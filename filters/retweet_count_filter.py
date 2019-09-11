@@ -20,7 +20,7 @@ def retweet_count(user_id, count=COUNT, bot_retweet_limit=BOT_RETWEET_LIMIT):
   
   return {'user_id': user_id, 'bot_retweet_limit': bot_retweet_limit, 'count': retweets, 'description': description, 'retweets_ratio': retweets_ratio}
 
-def retweet_ratio_filter(user_id,count=COUNT):
-  return retweet_count(user_id,count)['retweets_ratio'] >= BOT_RETWEET_LIMIT
+def retweet_ratio_filter(user,count=COUNT):
+  return retweet_count(user['id'],count)['retweets_ratio'] #>= BOT_RETWEET_LIMIT
 
-print(retweet_ratio_filter(331085505,50))
+#print(retweet_ratio_filter(331085505,50))

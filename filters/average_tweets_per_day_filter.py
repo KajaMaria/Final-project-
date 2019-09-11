@@ -15,7 +15,7 @@ def get_average_tweets_per_day(user):
 
 def average_tweets_per_day_filter(user):
   average = get_average_tweets_per_day(user)
-  return average >= NO_OF_TWEETS_PER_DAY_THRESHOLD
+  return average #>= NO_OF_TWEETS_PER_DAY_THRESHOLD
 
 #def test_filter():
 #  users = retrieve_users()

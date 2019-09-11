@@ -18,6 +18,8 @@ def map_activity_hours(tweets_timestamps):
     else:
       activity_map[created_at_date] = set([created_at.hour])
   return activity_map
+
+
   
 def calculate_average_activity_hours_per_day(activity_dict):#tweets_timestamps):
   total_hours = 0

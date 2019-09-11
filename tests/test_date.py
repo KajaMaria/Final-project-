@@ -13,6 +13,6 @@ def test_average_tweets_per_day():
 
 def test_average_tweets_per_day_filter():
      average = average_tweets_per_day_filter(bot)
-     assert average == True
+     assert average == 3074.5
      average_notbot = average_tweets_per_day_filter(notbot)
-     assert average_notbot == False
+     assert average_notbot == 5.1

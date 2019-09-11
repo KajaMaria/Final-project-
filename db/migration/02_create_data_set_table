@@ -1,0 +1,1 @@
+CREATE TABLE data_set (id serial PRIMARY KEY, classified_samples varchar);

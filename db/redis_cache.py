@@ -14,3 +14,11 @@ def retrieve_headlines():
 
 def retrieve_users():
   return json.loads(r.get('users').decode("utf-8"))
+
+def store_mock_data_set(data_set):
+  return r.set('mock_data_set', json.dumps(data_set))
+
+def retrieve_mock_data_set():
+  mds = json.loads(r.get('mock_data_set').decode("utf-8"))
+  return [(element[0],element[1]) for element in mds]
+

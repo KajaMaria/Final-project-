@@ -1,6 +1,7 @@
 import psycopg2
 import os
 import sys
+import json
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 import credentials
 
@@ -18,6 +19,23 @@ print("Connected!")
 def test_connection():
   pass
 
+def get_classified_set():
+  cursor.execute("SELECT classified_samples FROM data_set;")
+  entries = cursor.fetchall()
+  #print(entries[0][0])
+  samples = []
+  for entry in entries:
+    ds = json.loads(entry[0])
+    for sample in ds:
+      samples.append((sample[0],sample[1]))
+  return samples
+
+def create_classified_set_entry(entry):
+  #  print(json.dumps(entry))
+  SQL = "INSERT INTO data_set (classified_samples) VALUES (%s);"
+  cursor.execute(SQL, (json.dumps(entry),))
+  connection.commit()
+
 def retrieve_list_of_news_sites():
   cursor.execute("SELECT related_account_name,related_account_id, url FROM news_sites;")
   entries = cursor.fetchall()
@@ -26,7 +44,7 @@ def retrieve_list_of_news_sites():
 def create_news_site_entry(entries):
   SQL = "INSERT INTO news_sites (related_account_name, related_account_id, url) VALUES (%s,%s,%s);"
   for entry in entries:
-    print(entry)
+    #print(entry)
     cursor.execute(SQL, entry)
   connection.commit()
 

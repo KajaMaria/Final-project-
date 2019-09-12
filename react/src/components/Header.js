@@ -14,10 +14,11 @@ class HeaderTab extends Component {
                         <Card.Title>Neo4j</Card.Title>
                         
                         <Card.Text>
+                
                     <Container>
-                        <Row className="text-center">
-                            <Col>
-                        <Col  xs={6}>
+                        <Row className="form text-center py-3">
+                            <Col >
+                        <Col  xs={12}>
                             <Form onSubmit={this.handleSubmit}>
                                 <Form.Group controlId="formBasic">
                                     <Form.Label>Choose Filter : </Form.Label>
@@ -47,10 +48,10 @@ class HeaderTab extends Component {
                 </Card>
                 <br />
             <Container>
-                <Row className="justify-content-md-center">
+                <Row className="justify-content-md-center" >
                     <Col>
-                        <Col xs={6}>
-                <Card className="text-center" style={{ width: '120rem', height: '60rem' }} >
+                        <Col xs={12}>
+                <Card className="text-center"  >
 
 
                     <Neo />

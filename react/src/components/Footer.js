@@ -6,28 +6,11 @@ const FooterBar = () => {
     <MDBFooter color="blue" className="font-small pt-4 mt-4">
       <MDBContainer fluid className="text-center text-md-left">
         <MDBRow>
-          <MDBCol md="6">
+          <MDBCol className="footer-copyright text-center py-3">
             <h5 className="title">Botter By General May Be</h5>
             <p>
-             Get involved in our Open Source API 
+            <a href="https://github.com/BenjaminDarking/project_pry"> Get involved in our Open Source API </a>
             </p>
-          </MDBCol>
-          <MDBCol md="6">
-            <h5 className="title">Links</h5>
-            <ul>
-              <li className="list-unstyled">
-                <a href="#!">Link 1</a>
-              </li>
-              <li className="list-unstyled">
-                <a href="#!">Link 2</a>
-              </li>
-              <li className="list-unstyled">
-                <a href="#!">Link 3</a>
-              </li>
-              <li className="list-unstyled">
-                <a href="#!">Link 4</a>
-              </li>
-            </ul>
           </MDBCol>
         </MDBRow>
       </MDBContainer>

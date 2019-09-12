@@ -16,7 +16,7 @@ only_links = SoupStrainer("a")
 
 def find_links(user):
     links = []
-    if 'urls' not in user:
+    if 'urls' not in user or len(user['urls']) == 0:
         return None
     else:
         url = user['urls'][0]['expanded_url']
@@ -65,6 +65,7 @@ def get_sites_with_user_mentioned(site, user):
 
 
 def filter_by_site_links(user):
+  try:
     site = find_links(user)
     if site and get_sites_with_user_mentioned(site=site, user=user) != None:
         print('user failed first filter')
@@ -75,6 +76,8 @@ def filter_by_site_links(user):
             return True
         else:
             return False
+  except:
+    print('fake new filter creating problems again')
 
 def test_filter():
   headlines = retrieve_headlines()

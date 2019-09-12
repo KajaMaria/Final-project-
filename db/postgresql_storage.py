@@ -24,15 +24,17 @@ def get_classified_set(set_id):
   SQL = "SELECT classified_samples FROM data_set WHERE set_id=(%s);"
   cursor.execute(SQL,(set_id,))
   entries = cursor.fetchall()
-  print(entries)
+  #print(entries)
   samples = []
   for entry in entries:
     ds = json.loads(entry[0])
     for sample in ds:
+      print('get sample = {}'.format(sample))
       samples.append((sample[0],sample[1]))
   return samples
 
 def create_classified_set_entry(samples,set_id):
+  print('create classified set samples = {}'.format(samples))
   SQL = "INSERT INTO data_set (set_id, classified_samples) VALUES (%s, %s);"
   cursor.execute(SQL, (set_id, json.dumps(samples),))
   connection.commit()

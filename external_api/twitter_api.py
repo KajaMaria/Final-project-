@@ -1,6 +1,9 @@
 import os
 import twitter
 import credentials
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+from db.redis_cache import store_users
 
 # Init
 API_CONSUMER_KEY = os.environ.get('CONSUMER_KEY')
@@ -46,7 +49,7 @@ def run_twitter_query(headlines):
   tweeted_headlines = twitter_search_tweets_by_headlines(headlines)
   users = twitter_search_users_by_tweets(tweeted_headlines)
   store_users(users)
-
+  return users
 
 def get_tweets_for_user(user_id, count, start_date=0, end_date=0):
     return api.GetUserTimeline(user_id=user_id, count=count)

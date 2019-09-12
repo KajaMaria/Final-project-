@@ -17,7 +17,17 @@ driver = GraphDatabase.driver(
 ## ---------------- ADDING USERS TO THE DB ----------------
 # As we only have four methods by which a user should enter
 # the project's database, i'm breaking those functions out
-# below for easy reading.
+# below for easy reading, although we've included a wrapping
+# function for simple use throughout the application.
+
+def store_user(source, user):
+    function = {
+        'headline': add_user_node_source_headline(user),
+        'text': add_user_node_source_text(user),
+        'hashtag': add_user_node_source_hashtag(user),
+        'user': add_user_node_source_user(user)
+    }
+    function[source](user)
 
 def add_user_node_source_headline(user):
     source = user['source']
@@ -59,16 +69,16 @@ def add_user_node_source_user(user):
 # match a suspected bot in the database and then denote their
 # relationship to each other.
 
-def get_bots_and_following_relationships(first_user, second_user, bidirectional):
+def set_bot_to_bot_relationships(first_user, second_user, bidirectional):
     # create a link between two nodes to denote that either one or 
     # both is following the other. Must be passed with the bidirectional
     # boolean - if false the first_user will be denoted as FOLLOWING the
-    # second user, else they will be noted as following each other.
+    # second user, otherwise they will be noted as following each other.
     # I have used first and second user here as it is clearer than following
     # and follower I believe, may be wrong here. 
     first_user_assignment = "MATCH (f:User {id: $first_user['id']})"
     second_user_assingment = "MATCH (s:User {id: $second_user['id']})"
-    if bidirectional:
+    if bidirectional == True:
         build_relationships = "MATCH (f)<-[:FOLLOWING]->(s) RETURN u"
     else:
         build_relationships = "MATCH (f)-[:FOLLOWING]->(s) RETURN u"
@@ -97,6 +107,25 @@ def retrieve_user(user):
         for record in session.run("MATCH (u:User {id: $user['id']}) RETURN u", user=user):
             return record
 
+def retrieve_all_users():
+    with driver.session() as session:
+        users = []
+        records = session.run("MATCH (u:User) RETURN u.screen_name as screen_name, u.id as id, u.created_at as created_at, u.followers_count as followers_count, u.statuses_count as statuses_count")#u.score as score, u.status as status, u.average_tweets as average_tweets")
+        for record in records:
+            user = {
+                "User": {
+                    "screen_name": record["screen_name"],
+                    "id": record["id"],
+                    "created_at": record["created_at"],
+                    "score": record["score"],
+                    "average_tweets": record["average_tweets"],
+                    "followers_count": record["followers_count"],
+                    "statuses_count": record["statuses_count"]
+                    # "status": record["status"]
+                }
+            }
+            users.append(user)
+    return users
 
 # def retrieve_text_source(tx, text):
 #     statement = "MATCH (a:Text { text: {text} }) RETURN a"
@@ -112,67 +141,5 @@ def retrieve_user(user):
 #     statement = "MATCH (u:User) RETURN ORDER BY u.created_at DESC LIMIT 1"
 #     pass
 
-# def get_bots(tx):
-#     records = tx.run("MATCH (u:User) RETURN u.screen_name as screen_name, u.id as id, u.created_at as created_at, u.followers_count as followers_count, u.statuses_count as statuses_count")#u.score as score, u.status as status, u.average_tweets as average_tweets")
-#     users = []
-#     for record in records:
-#         user = {
-#             "User": {
-#                 "screen_name": record["screen_name"],
-#                 "id": record["id"],
-#                 "created_at": record["created_at"],
-#                 "score": record["score"],
-#                 "average_tweets": record["average_tweets"],
-#                 "followers_count": record["followers_count"],
-#                 "statuses_count": record["statuses_count"]
-#                 # "status": record["status"]
-#             }
-#         }
-#         users.append(user)
-#     return users
-#         # for i in record.items()[0][1].items():
-#         #     print(i[0], i[1])
-#     # something = [i['n'].items() for i in records]
-#     # for some in something:
-#     #     print(some.value())
-#     # for record in tx.run("MATCH (n) RETURN n"):
-#     #     for i, j in iter(record['n']):
-#     #         print(j)
-        
-
-# def store_data(tx, function_name, data):
-#     function = {
-#         'user': add_user_node,
-#         'text': add_text_node,
-#         'hashtag': add_hashtag_node,
-#         'relationship': add_relationship_node
-#     }
-#     function[function_name](data)
-#     # session.write_transaction(element['type'], element['data'])
-
-#     # with driver.session() as session:
-#     #    users = retrieve_users()
-#     #    print(users)
-#     #    for user in users:
-#     #        print(user)
-#     #        session.write_transaction(add_node_user, user['screen_name'])
-#     #    session.read_transaction(print_nodes)
-
-# def relationships_data(tx):
-    
-#     tx.run("MERGE (b)-[:TWEETED {created_at: $text_string.created_date}]->(t) ",)
-
-# def template_function(labels_data, relationships_data):
-#     return {
-#         "labels": labels_data,
-#         "relationships": relationships_data
-#     }
 
 
-users = retrieve_users()
-
-for user in users:
-    add_user_node_source_headline(user=user)
-
-
-# print(session.read_transaction(print_nodes))

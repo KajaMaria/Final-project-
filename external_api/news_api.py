@@ -1,9 +1,9 @@
-import credentials
-from db.redis_cache import store_headlines, retrieve_headlines
 from newsapi.newsapi_client import NewsApiClient
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+import credentials
+from db.redis_cache import store_headlines, retrieve_headlines
 
 API_KEY = os.environ.get('NEWS_KEY')
 

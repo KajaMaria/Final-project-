@@ -36,6 +36,7 @@ def get_users_from_tweets(source_and_tweets):
     for source_with_results in source_and_tweets:
         for tweet in source_with_results['results']['statuses']:
             user = ({'source': source_with_results['source'],
+                     'source_type': 'news-headline',
                      'screen_name': tweet['user']['screen_name'],
                      'id': tweet['user']['id'],
                      'urls': tweet['entities']['urls'],
@@ -77,6 +78,5 @@ def get_user(user_id):
 #     tweeted_headlines = twitter_search_tweets_by_headlines(headlines)
 #     users = twitter_search_users_by_tweets(tweeted_headlines)
 #     return users
-
 
 run_twitter_query()

@@ -3,6 +3,11 @@ Footer {
 }
 
 #viz {
-  height: 80vh;
-  width: 30vw;
+  height: auto;
+  width: auto;
+}
+
+.canvas {
+  width: "1918";
+  height: "2000";
 }

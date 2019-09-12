@@ -21,7 +21,7 @@ api = twitter.Api(consumer_key=(API_CONSUMER_KEY),
 DEFAULT_RETURNED_TWEETS = 100
 
 
-def twitter_search_tweets_by_headlines(headlines=retrieve_headlines(), count=DEFAULT_RETURNED_TWEETS):
+def twitter_search_tweets_by_headlines(headlines, count=DEFAULT_RETURNED_TWEETS):
     results = []
     for headline in headlines:
         query_result = api.GetSearch(
@@ -29,6 +29,13 @@ def twitter_search_tweets_by_headlines(headlines=retrieve_headlines(), count=DEF
         results.append({'source': headline, 'results': query_result})
     return results
 
+
+
+def run_twitter_query(headlines):
+  tweeted_headlines = twitter_search_tweets_by_headlines(headlines)
+  users_and_sources = get_users_from_tweets(tweeted_headlines)
+  store_users(users_and_sources)
+  return users_and_sources
 
 def get_users_from_tweets(source_and_tweets):
       # creating a list of user dicts with a source key
@@ -51,11 +58,11 @@ def get_users_from_tweets(source_and_tweets):
     return users_with_source
 
 
-def run_twitter_query():
-    tweets_from_headlines_queries = twitter_search_tweets_by_headlines()
-    users = get_users_from_tweets(tweets_from_headlines_queries)
-    store_users(users)
-    return users
+#def run_twitter_query():
+#    tweets_from_headlines_queries = twitter_search_tweets_by_headlines()
+#    users = get_users_from_tweets(tweets_from_headlines_queries)
+#    store_users(users)
+#    return users
 
 
 def get_tweets_for_user(user_id, count, start_date=0, end_date=0):
@@ -79,4 +86,4 @@ def get_user(user_id):
 #     users = twitter_search_users_by_tweets(tweeted_headlines)
 #     return users
 
-run_twitter_query()
+#run_twitter_query()

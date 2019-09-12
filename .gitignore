@@ -3,3 +3,4 @@ credentials.py
 __pycache__/
 dump.rdb
 .ipynb_checkpoints/
+./data_set/*.json

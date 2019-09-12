@@ -8,7 +8,8 @@ import NavigationBar from './components/Navigation';
 import FooterBar from './components/Footer';
 import Layout from './components/Layout';
 import LoadingBar from './components/Loading';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row, Navbar } from 'react-bootstrap';
+import Neo from './components/neo';
 
 class App extends Component {
 
@@ -81,43 +82,14 @@ class App extends Component {
   
 
     return (
-      
       <div style={{ height: '100vh', position: 'relative' }}>
-        
-      <Row>
-        <Col>
         <NavigationBar />
-        </Col>
+        <Row className="main-content">
+          <Neo />
         </Row>
-            
-        <Row>
-         <Col>
-          <HeaderTab />
-          </Col>
-          
-        
-        </Row>
-        <Row>
-      
-        </Row>
-    
-            {/* display */}
-        
-           
-      <Row>
-        <Col>
-          <Layout />
-
-        
-        
-          </Col>
-        </Row>
-
-        <Row>
-        <Col>
-          <FooterBar />
-          </Col>
-        </Row>
+        <div className ="footie">
+        <a href="https://github.com/BenjaminDarking/project_pry"> Get involved in our Open Source API </a>
+        </div>
 
       </div>
     );

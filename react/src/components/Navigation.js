@@ -20,7 +20,7 @@ export class NavigationBar extends Component {
         return (
         
          <Styles>
-                <Navbar bg="light" expand="lg">
+                <Navbar bg="light" expand="lg" className="navbar">
                     <Navbar.Brand href= "/">Botter</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

@@ -3,11 +3,24 @@ Footer {
 }
 
 #viz {
-  height: auto;
-  width: auto;
+  height: 100%;
+  width: 100%;
 }
 
-.canvas {
-  width: "1918";
-  height: "2000";
+.main-content {
+  height: 85%;
+}
+
+.navbar {
+  width: 100vw;
+  height: 10%;
+  padding-left: 30px;
+  margin-right: 0px;
+}
+
+.footie {
+  align-self: flex-end;
+  width: 100vw;
+  height: 10%;
+  text-align: center;
 }

@@ -108,7 +108,7 @@ class App extends Component {
         <Col>
           <Layout />
 
-          <LoadingBar />
+        
         
           </Col>
         </Row>

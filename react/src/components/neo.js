@@ -1,32 +1,61 @@
 import React, { Component } from "react";
-import NeoVis from "../../node_modules/neovis.js";
+import NeoVis from 'neovis.js';
+const axios = require('axios');
 
 export class Neo extends Component {
-  draw() {
-    var config = {
-      container_id: "viz",
-      server_url: "bolt://localhost:7687",
-      server_user: "",
-      server_password: "",
-      labels: {
-        User: {}
-      },
-      initial_cypher: "MATCH (p) RETURN p"
-    };
-    var viz = new NeoVis(config);
-    viz.render();
-  }
-  componentDidMount() {
-    this.draw();
-  }
+    state = {
+        neo_labels: [],
+        neo_relationships: []
+    }
 
-  render() {
-    return (
-      <div>
-        <div id="viz"></div>
-      </div>
-    );
-  }
+
+
+    fetchData() {
+        let configs = {
+            "Access-Control-Allow-Origin": "*"
+        }
+
+        axios.get('http://localhost:5000/', configs).then(response => {
+            this.setState({
+                neo_labels: response.data.label,
+                neo_realtionships: response.data.relationships,
+            })
+
+            let config = {
+                container_id: "viz",
+                server_url: "bolt://localhost:7687/",
+                server_user: "neo4j",
+                server_password:
+                labels: {
+                    "User": { name: "screen_name" }
+                },
+                relationships: {
+                    TWEETED: ""
+                },
+                initial_cypher: "MATCH p=(:User)-[:TWEETED]->(:Source) RETURN p"
+            };
+            console.log(config.labels)
+            console.log(config.relationships)
+
+            var viz = new NeoVis(config);
+            console.log(viz)
+            console.log("Testing")
+            viz.render();
+            console.log("Testing 2")
+        })
+    }
+
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    render() {
+        return (
+
+            <div id="viz"></div>
+
+        );
+    }
 }
 
 export default Neo;

@@ -1,8 +1,7 @@
 import React from 'react'
 import { Component } from 'react';
 import { Card, Button } from 'react-bootstrap';
-import styled from 'styled-components';
-
+import Neo from './neo';
 
 
 class HeaderTab extends Component {
@@ -43,14 +42,16 @@ class HeaderTab extends Component {
                  </Card.Text>
                     <Button variant="primary">Go somewhere</Button>
                 </Card.Body>
-                <Card.Footer className="text-muted">2 days ago</Card.Footer>
+                
                 </Card>
                 <br />
                 <Card>
-                <Card.Img variant="top" src="pic1.jpg" />
+                    <h1>Hello World</h1>
+                <Neo /> 
+                <h1>Hello World</h1>
                 <Card.Body>
                 <Card.Text>
-                    You can put neo4j here
+                  
                 </Card.Text>
                 </Card.Body>
             </Card>

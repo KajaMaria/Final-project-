@@ -14,7 +14,10 @@ GRAPHENEDB_BOLT_URL = os.environ.get('GRAPHENEDB_BOLT_URL')
 driver = GraphDatabase.driver(
     GRAPHENEDB_BOLT_URL, auth=(GRAPHENEDB_BOLT_USER, GRAPHENEDB_BOLT_PASSWORD))
 
-
+## ---------------- ADDING USERS TO THE DB ----------------
+# As we only have four methods by which a user should enter
+# the project's database, i'm breaking those functions out
+# below for easy reading.
 
 def add_user_node_source_headline(user):
     source = user['source']
@@ -24,35 +27,76 @@ def add_user_node_source_headline(user):
                     "MERGE (a)-[:TWEETED]->(s) ",
                     user=user, source=source)
 
-# def add_text_node(tx, source):
-#     tx.run("MERGE (s:Source {source: $source.source, content: $source.content}) ",
-#            source=source)
+def add_user_node_source_text(user):
+    source = user['source']
+    with driver.session() as session:
+        session.run("MERGE (a:User {screen_name: $user['screen_name'], id: $user['id'], created_at: $user['created_at'], followers_count: $user['followers_count'], statuses_count: $user['statuses_count']}) "#, score: $user['score'], average_tweets: $user['average_tweets'] status: $user['status']}) ",
+                    "MERGE (s:Source {title: $source['title'], published_at: $source['published_at'], publisher: $source['publisher'], url: $source['url']}) "
+                    "MERGE (a)-[:TWEETED]->(s) ",
+                    user=user, source=source)
 
-# def add_hashtag_node(tx, source):
-#     tx.run("MERGE (s:Source {source: $source.source, content: $source.content}) ",
-#            source=source)
+def add_user_node_source_hashtag(user):
+    source = user['source']
+    with driver.session() as session:
+        session.run("MERGE (a:User {screen_name: $user['screen_name'], id: $user['id'], created_at: $user['created_at'], followers_count: $user['followers_count'], statuses_count: $user['statuses_count']}) "#, score: $user['score'], average_tweets: $user['average_tweets'] status: $user['status']}) ",
+                    "MERGE (s:Source {title: $source['title'], published_at: $source['published_at'], publisher: $source['publisher'], url: $source['url']}) "
+                    "MERGE (a)-[:TWEETED]->(s) ",
+                    user=user, source=source)
 
-# def add_relationship_node(tx, args):
-#     pass
+def add_user_node_source_user(user):
+    source = user['source']
+    with driver.session() as session:
+        session.run("MERGE (a:User {screen_name: $user['screen_name'], id: $user['id'], created_at: $user['created_at'], followers_count: $user['followers_count'], statuses_count: $user['statuses_count']}) "#, score: $user['score'], average_tweets: $user['average_tweets'] status: $user['status']}) ",
+                    "MERGE (s:Source {title: $source['title'], published_at: $source['published_at'], publisher: $source['publisher'], url: $source['url']}) "
+                    "MERGE (a)-[:TWEETED]->(s) ",
+                    user=user, source=source)
 
-# def get_bots_and_following_relationships(tx):
-#     # user_statement = "MATCH (u:User) RETURN u"
-#     # build_relationships = "MATCH (u)-[:FOLLOWING]->(u) RETURN u"
-#     labels_data = get_bots(tx)
-#     relationships_data = get_relationships(tx)
-#     return template_function(labels_data, relationships_data)
-#     # label = [for label in labels_data]
-#     pass
+## ---------------- ADDING RELATIONSHIPS TO THE DB ----------------
+# These methods should be run in the event where in case there may
+# be new unlinked bots to sources, or bots to other bots we can 
+# update the db to reflect these relationships. I.e we can run the 
+# following filter and see whether any of the following/followers 
+# match a suspected bot in the database and then denote their
+# relationship to each other.
 
-# def retrieve_all_data(tx):
-#     statement = "MATCH (n) RETURN n "
-#     for record in tx.run(statement):
-#         return record
+def get_bots_and_following_relationships(first_user, second_user, bidirectional):
+    # create a link between two nodes to denote that either one or 
+    # both is following the other. Must be passed with the bidirectional
+    # boolean - if false the first_user will be denoted as FOLLOWING the
+    # second user, else they will be noted as following each other.
+    # I have used first and second user here as it is clearer than following
+    # and follower I believe, may be wrong here. 
+    first_user_assignment = "MATCH (f:User {id: $first_user['id']})"
+    second_user_assingment = "MATCH (s:User {id: $second_user['id']})"
+    if bidirectional:
+        build_relationships = "MATCH (f)<-[:FOLLOWING]->(s) RETURN u"
+    else:
+        build_relationships = "MATCH (f)-[:FOLLOWING]->(s) RETURN u"
+    
+    with driver.session() as session:
+        session.run(first_user_assignment + 
+                    second_user_assingment +
+                    build_relationships, first_user=first_user, second_user=second_user
+                    )
+    
 
-# def retrieve_user(tx, user_id):
-#     statement = "MATCH (a:User { id: {user_id} }) RETURN a"
-#     for record in tx.run(statement, user_id=user_id):
-#         return record
+## ---------------- RETRIEVING DATA FROM THE DB ----------------
+# These methods allow us to perform the necessescary operations to
+# retrieve users, sources and stats from the db. 
+
+def retrieve_all_data():
+    # careful calling this, it can be a very large query / response
+    # perhaps you actually need to retrieve only a single node or
+    # cluster?
+    with driver.session() as session:
+        for record in session.run("MATCH (n) RETURN n "):
+            return record
+
+def retrieve_user(user):
+    with driver.session() as session:
+        for record in session.run("MATCH (u:User {id: $user['id']}) RETURN u", user=user):
+            return record
+
 
 # def retrieve_text_source(tx, text):
 #     statement = "MATCH (a:Text { text: {text} }) RETURN a"
@@ -128,8 +172,7 @@ def add_user_node_source_headline(user):
 users = retrieve_users()
 
 for user in users:
-    add_user_node(user=user)
-    # session.write_transaction(add_user_node, user)
+    add_user_node_source_headline(user=user)
 
 
 # print(session.read_transaction(print_nodes))

@@ -4,7 +4,7 @@ import urllib.request
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
-from external_api.twitter_api import get_tweets_with_users
+from external_api.twitter_api import get_users_from_tweets
 from db.postgresql_storage import create_news_site_entry
 from db.redis_cache import retrieve_headlines
 
@@ -79,11 +79,4 @@ def filter_by_site_links(user):
   except:
     print('fake new filter creating problems again')
 
-def test_filter():
-  headlines = retrieve_headlines()
-  users = get_tweets_with_users(headlines)
 
-  for user in users:
-    filter_by_site_links(user)
-
-#test_filter()

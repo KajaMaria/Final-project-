@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
 import json
 import subprocess
 from external_api.news_api import get_headlines
-from external_api.twitter_api import twitter_search_tweets_by_headlines, twitter_search_users_by_tweets
+from external_api.twitter_api import run_twitter_query#twitter_search_tweets_by_headlines, twitter_search_users_by_tweets
 from filters.verified_filter import unverified_and_unprotected_user_filter
 
 
@@ -39,9 +39,9 @@ RETURNED_TWEETS_COUNT = 200
 
 def query_for_users():
     headlines = get_headlines()
-    tweets = twitter_search_tweets_by_headlines(
-        headlines, RETURNED_TWEETS_COUNT)
-    users = twitter_search_users_by_tweets(tweets)
+    #tweets = twitter_search_tweets_by_headlines(headlines, RETURNED_TWEETS_COUNT)
+    #users = twitter_search_users_by_tweets(tweets)
+    users = run_twitter_query(headlines)
     unverified = [user for user in users if unverified_and_unprotected_user_filter(user)]
     return unverified
 
@@ -63,6 +63,7 @@ def prep_classification_file(users):
   if os.path.isfile('new_data_set.json'):
     with open('new_data_set.json', 'r+') as file:
       lines = file.readlines()
+      print(lines)
       file.seek(0)
       file.truncate()
       for line in lines:
@@ -73,6 +74,7 @@ def prep_classification_file(users):
                                 'screen_name': user['screen_name'],
                                 'url': 'https://twitter.com/{}'.format(user['screen_name']),
                                 'classification': ''})
+        print('writing user {}'.format(user))
         file.write(user_details+'\n')
 
 
@@ -85,7 +87,9 @@ def open_tabs_in_browser():
 
 def classification_session():
     users = query_for_users()
+    print(len(users))
     users = prep_users_for_classification(users)
+    print(len(users))
     prep_classification_file(users)
     #open_tabs_in_browser()
 

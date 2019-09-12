@@ -16,7 +16,7 @@ export class Neo extends Component {
             container_id: "viz",
             server_url: "bolt://localhost:7687/",
             server_user: "neo4j",
-            server_password: "neo4j",
+            server_password: "dansbugs",
             labels: {
                 "User": { name: "screen_name" }
             },

@@ -7,6 +7,7 @@ def get_new_users_from_headlines_and_store_them():
     get_headlines()
     run_twitter_query()
     users = retrieve_users()
+    print(users)
     for user in users:
         add_user_node_source_headline(user)
 

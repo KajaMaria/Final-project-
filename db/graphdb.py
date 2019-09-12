@@ -1,4 +1,3 @@
-
 from neo4j import GraphDatabase
 import sys
 import os
@@ -79,9 +78,9 @@ def set_bot_to_bot_relationships(first_user, second_user, bidirectional):
     first_user_assignment = "MATCH (f:User {id: $first_user['id']})"
     second_user_assingment = "MATCH (s:User {id: $second_user['id']})"
     if bidirectional == True:
-        build_relationships = "MATCH (f)<-[:FOLLOWING]->(s) RETURN u"
+        build_relationships = "MATCH (f)<-[:FOLLOWING]->(s)"
     else:
-        build_relationships = "MATCH (f)-[:FOLLOWING]->(s) RETURN u"
+        build_relationships = "MATCH (f)-[:FOLLOWING]->(s)"
     
     with driver.session() as session:
         session.run(first_user_assignment + 
@@ -104,8 +103,19 @@ def retrieve_all_data():
 
 def retrieve_user(user):
     with driver.session() as session:
-        for record in session.run("MATCH (u:User {id: $user['id']}) RETURN u", user=user):
-            return record
+        for record in session.run("MATCH (u:User) RETURN u.screen_name as screen_name, u.id as id, u.created_at as created_at, u.followers_count as followers_count, u.statuses_count as statuses_count"):
+            user = {
+                "User": {
+                    "screen_name": record["screen_name"],
+                    "id": record["id"],
+                    "created_at": record["created_at"],
+                    "score": record["score"],
+                    "average_tweets": record["average_tweets"],
+                    "followers_count": record["followers_count"],
+                    "statuses_count": record["statuses_count"]
+                }
+            }
+        return user
 
 def retrieve_all_users():
     with driver.session() as session:
@@ -127,19 +137,27 @@ def retrieve_all_users():
             users.append(user)
     return users
 
-# def retrieve_text_source(tx, text):
-#     statement = "MATCH (a:Text { text: {text} }) RETURN a"
-#     for record in tx.run(statement, text=text):
-#         return record
+def retrieve_text_source(text):
+    statement = "MATCH (a:Text { text: {text} }) RETURN a.text as text"
+    with driver.session() as session:
+        for record in session.run(statement, text=text):
+            return record
         
-# def retrieve_hashtag(tx, hashtag):
-#     statement = "MATCH (a:Hashtag { text: {text} }) RETURN a"
-#     for record in tx.run(statement, text=hashtag):
-#         return record
+def retrieve_hashtag(hashtag):
+    statement = "MATCH (a:Hashtag { text: {text} }) RETURN a.text as text, a.tending as trending"
+    with driver.session() as session:
+        for record in session.run(statement, text=hashtag):
+            return record
 
-# def get_oldest(tx):
-#     statement = "MATCH (u:User) RETURN ORDER BY u.created_at DESC LIMIT 1"
-#     pass
-
-
+def retrieve_headline(url):
+    statement = "MATCH (a:Headline { url: {text} }) RETURN a.title as title, a.publisher as publisher, a.published_at as published_at, a.url as url"
+    with driver.session() as session:
+        for record in session.run(statement, text=url):
+            headline = {
+                'title': record['title'],
+                'publisher': record['publisher'],
+                'published_at': record['published_at'],
+                'url': record['url']
+            }
+            return headline
 

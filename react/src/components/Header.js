@@ -45,16 +45,13 @@ class HeaderTab extends Component {
                 
                 </Card>
                 <br />
+                <div>
                 <Card>
-                    <h1>Hello World</h1>
+               
                 <Neo /> 
-                <h1>Hello World</h1>
-                <Card.Body>
-                <Card.Text>
-                  
-                </Card.Text>
-                </Card.Body>
+        
             </Card>
+            </div>
             </div>
         )
     }

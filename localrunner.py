@@ -9,3 +9,5 @@ def get_new_users_from_headlines_and_store_them():
     users = retrieve_users()
     for user in users:
         add_user_node_source_headline(user)
+
+get_new_users_from_headlines_and_store_them()

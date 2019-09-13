@@ -84,13 +84,25 @@ class App extends Component {
     return (
       <div style={{ height: '100vh', position: 'relative' }}>
         <NavigationBar />
-        <Row className="main-content">
-          <Neo />
+        <Row>
+          <Col></Col>
+            <Col><HeaderTab /></Col>
+              <Col></Col>
         </Row>
+        <Row className="main-content">
+          <Col xs= {1}></Col>
+          <Col><Neo /></Col>
+          <Col xs= {1}></Col>
+        </Row>
+        
         <div className ="footie">
-        <a href="https://github.com/BenjaminDarking/project_pry"> Get involved in our Open Source API </a>
+          <br />
+          <br />
+        <a href="https://github.com/BenjaminDarking/project_pry">Github </a>
+        <p>
+        <a href="https://www.instagram.com/pry_final_project/">Our Instagram Story</a>
+        </p>
         </div>
-
       </div>
     );
   }

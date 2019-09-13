@@ -21,7 +21,7 @@ export class NavigationBar extends Component {
         
          <Styles>
                 <Navbar bg="light" expand="lg" className="navbar">
-                    <Navbar.Brand href= "/">Botter</Navbar.Brand>
+                <img src="logo2.png"/>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                     <NavDropdown title="Go Fish" id="basic-nav-dropdown">
@@ -40,7 +40,6 @@ export class NavigationBar extends Component {
                     <NavDropdown.Item href="#">Bot Graveyard</NavDropdown.Item>
                        </NavDropdown>
                     </Navbar.Collapse>
-
                     <Form inline>
                     <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                     <Button variant="outline-primary">Search</Button>

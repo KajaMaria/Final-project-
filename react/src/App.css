@@ -3,8 +3,10 @@ Footer {
 }
 
 #viz {
-  height: 100%;
+  height: 95%;
   width: 100%;
+  border: solid 5px rgb(220, 224, 226);
+  border-radius: 10px;  
 }
 
 .main-content {
@@ -21,6 +23,19 @@ Footer {
 .footie {
   align-self: flex-end;
   width: 100vw;
-  height: 10%;
+  height: 15%;
   text-align: center;
+  background-color: rgb(220, 224, 226);
+}
+
+.head {
+  background-color: rgb(220, 224, 226);
+  border-radius: 2%;
+  text-align: center;
+  padding: 10px;
+  margin: 20px;
+}
+img {
+  width: 5%;
+  height: 5%;
 }

@@ -21,3 +21,4 @@ export class LoadingBar extends Component {
 }
 
 export default LoadingBar;
+

@@ -7,6 +7,10 @@ Tracking Twitter bots
 
 https://www.instagram.com/pry_final_project/
 
+### Our final presentation 
+
+https://docs.google.com/presentation/d/10ZNfjwBVwNRDAY0bXRBze8QPks3NYgEmH3D5YX8PvEI/edit?usp=sharing
+
 ### Installation:
 
 Install the modules:
